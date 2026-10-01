@@ -1,0 +1,17 @@
+{
+  "engine": "stressatlas/0.1.0",
+  "files": {
+    "inputs.json": "8364529f396f6b04d19e09aef3305a39b06d50a6da7cef70564d8a3ac3ff3381",
+    "loss_sample.csv": "6ccc18814600e6651e8156fa238278adabbc7398dbb85ed91f9472eb48a74d90",
+    "report.html": "5e342962d6eb61baaeb881334e6a06b51ad3a9fc87a13f9e88ec4d6537477515",
+    "scenarios.csv": "d1f891b04dadb0fc83b3ac00e5d681214886871e0c35126622913b39eba6049d",
+    "sector_es.csv": "bd198d4f4f9cead659b0749676498b9ffb8bf3c96a7422681a39e100f67db3e8",
+    "summary.json": "eeba6ae051fa367d82066e18beed0d41148ff275fcda02557a153a869a9d531e"
+  },
+  "runtime": {
+    "numpy": "2.3.5",
+    "python": "3.12.14",
+    "scipy": "1.17.0"
+  },
+  "schema_version": 1
+}
