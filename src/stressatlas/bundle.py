@@ -66,11 +66,22 @@ def decode(data):
     return loans, scenarios, dict(config)
 
 
+def spreadsheet_cell(value):
+    """Neutralize formula-shaped strings; leave numeric financial values untouched."""
+    if isinstance(value, str) and (
+        value.startswith(("\t", "\r", "\n"))
+        or value.lstrip(" \t\r\n").startswith(("=", "+", "-", "@"))
+    ):
+        return "'" + value
+    return value
+
+
 def csv_text(rows, fields):
     stream = io.StringIO(newline="")
     writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
-    writer.writeheader()
-    writer.writerows(rows)
+    writer.writerow({field: spreadsheet_cell(field) for field in fields})
+    writer.writerows({field: spreadsheet_cell(value) for field, value in row.items()}
+                    for row in rows)
     return stream.getvalue()
 
 

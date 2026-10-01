@@ -30,3 +30,7 @@ See [the full saved input](../demo/inputs.json). JSON scenarios decode into immu
 `sector_es.csv` contains each sector's contribution to portfolio ES and its share. The first 200 paths are exported in `loss_sample.csv`, with columns `path` and `loss:<scenario name>`; this prevents a scenario named `path` from overwriting the index.
 
 The driver fingerprint describes the bank of normals plus its obligor/sector universe, path count and seed. It is not proof of model accuracy. All quantities in the example are synthetic.
+
+## Spreadsheet-compatible exports
+
+Formula-shaped text fields and headers beginning with `=`, `+`, `-`, `@`, or control whitespace receive an apostrophe prefix in CSV exports. Numeric losses and negative numeric features keep their values. This affects the spreadsheet representation only: `inputs.json` retains original identifiers and is the authoritative source for replay. The verifier regenerates the same protected CSV representation.

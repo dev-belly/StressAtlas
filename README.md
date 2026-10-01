@@ -1,9 +1,11 @@
+<img src="assets/hero.svg" width="100%" alt="StressAtlas · data, method and replayable evidence" />
+
 # StressAtlas
 
 **Credit portfolio stress tests that distinguish marginal risk from clustered defaults.**
 
 [![CI](https://github.com/dev-belly/StressAtlas/actions/workflows/ci.yml/badge.svg)](https://github.com/dev-belly/StressAtlas/actions/workflows/ci.yml)
-[中文说明](README.zh-CN.md) · [Model and tail math](docs/METHODOLOGY.md) · [Data contract](docs/DATA_CONTRACT.md) · [Case study](docs/CASE_STUDY.md) · [Interview notes](docs/INTERVIEW.md)
+[Open the online report](https://dev-belly.github.io/StressAtlas/) · [中文说明](README.zh-CN.md) · [Model and tail math](docs/METHODOLOGY.md) · [Data contract](docs/DATA_CONTRACT.md) · [Case study](docs/CASE_STUDY.md) · [Interview notes](docs/INTERVIEW.md)
 
 Scenario assumptions are explicit. All scenarios reuse the same global, sector and obligor-level random drivers. Multiple loans to one borrower share one default event. The resulting report includes analytic expected loss, simulated mean and sampling error, discrete VaR/ES, paired scenario differences and additive sector attribution.
 
