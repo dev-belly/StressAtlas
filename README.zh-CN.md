@@ -26,6 +26,14 @@ python -m unittest discover -s tests -v
 - 离散 ES 按固定尾部质量计算，正确处理分数边界和并列损失。
 - 行业使用同一组组合尾部权重，贡献之和等于组合 ES。
 - 报告能从保存的输入、参数和随机种子完整重放；修改指标再更新哈希仍会被发现。
+- 新增配对路径 bootstrap，重新计算 VaR/ES 与情景差异的近似区间及标准误；诊断固定模型下的模拟抽样波动，保留所有重采样统计量。
+
+[在线精度诊断](https://dev-belly.github.io/StressAtlas/precision/) · [方法、范围与面试问答](docs/PRECISION.md)
+
+```bash
+stressatlas precision --inputs demo/inputs.json --resamples 300 --out outputs/precision
+stressatlas verify-precision --out outputs/precision
+```
 
 合成演示：160 笔贷款、80 个借款人、4 个行业、基础敞口 1.696 亿元、20,000 次模拟。保持边际风险不变时，独立违约、基础相关性、较高相关性情景的解析期望损失都约为 336.63 万元；99% ES 分别约为 962.15 万、1,847.62 万、2,770.63 万元。
 

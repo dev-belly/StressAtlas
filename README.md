@@ -46,6 +46,23 @@ The last two scenarios keep marginal PD, LGD and EAD fixed. Analytic expected lo
 
 Source: [saved scenario table](demo/scenarios.csv), [sector attribution](demo/sector_es.csv), [normalized inputs](demo/inputs.json), [summary and driver fingerprint](demo/summary.json).
 
+## Diagnose Monte Carlo tail precision
+
+The separate precision report resamples complete paths with the same indices
+across all scenarios. It recomputes mean loss, VaR, exact empirical ES and their
+paired changes, reporting approximate percentile intervals and bootstrap SE.
+These diagnose sampling variation under fixed model assumptions; sparse and
+discrete tails can make coverage unreliable.
+
+```bash
+stressatlas precision --inputs demo/inputs.json --resamples 300 --out outputs/precision
+stressatlas verify-precision --out outputs/precision
+```
+
+[Online precision report](https://dev-belly.github.io/StressAtlas/precision/) ·
+[Method and worked example](docs/PRECISION.md) ·
+[Interval rows](demo/precision/intervals.csv) · [All resamples](demo/precision/resamples.csv)
+
 ## Details that matter
 
 - **Borrower identity:** splitting a loan does not create independent default events.

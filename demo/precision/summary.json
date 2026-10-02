@@ -1,0 +1,299 @@
+{
+  "alpha": 0.99,
+  "baseline_scenario": "baseline",
+  "confidence_level": 0.95,
+  "data_kind": "synthetic",
+  "driver_fingerprint": "6c83001cc1e9e16580cd46c0966fd6de86e1343247f90b571bd3450e7ac9231f",
+  "endpoint_quantile_method": "linear",
+  "interval_rows": 30,
+  "intervals": [
+    {
+      "bootstrap_se": 23062.064333,
+      "comparison": "absolute",
+      "estimate": 3380273.625,
+      "lower": 3340906.434375,
+      "metric": "mean_loss",
+      "scenario": "baseline",
+      "upper": 3427946.28125
+    },
+    {
+      "bootstrap_se": 0.0,
+      "comparison": "paired_delta",
+      "estimate": 0.0,
+      "lower": 0.0,
+      "metric": "mean_loss",
+      "scenario": "baseline",
+      "upper": 0.0
+    },
+    {
+      "bootstrap_se": 274701.200166,
+      "comparison": "absolute",
+      "estimate": 15140000.0,
+      "lower": 14684375.0,
+      "metric": "var",
+      "scenario": "baseline",
+      "upper": 15700250.0
+    },
+    {
+      "bootstrap_se": 0.0,
+      "comparison": "paired_delta",
+      "estimate": 0.0,
+      "lower": 0.0,
+      "metric": "var",
+      "scenario": "baseline",
+      "upper": 0.0
+    },
+    {
+      "bootstrap_se": 326639.010269,
+      "comparison": "absolute",
+      "estimate": 18476225.0,
+      "lower": 17764282.1875,
+      "metric": "es",
+      "scenario": "baseline",
+      "upper": 19116079.375
+    },
+    {
+      "bootstrap_se": 0.0,
+      "comparison": "paired_delta",
+      "estimate": 0.0,
+      "lower": 0.0,
+      "metric": "es",
+      "scenario": "baseline",
+      "upper": 0.0
+    },
+    {
+      "bootstrap_se": 46265.136496,
+      "comparison": "absolute",
+      "estimate": 8672394.15,
+      "lower": 8599943.4425,
+      "metric": "mean_loss",
+      "scenario": "recession",
+      "upper": 8764183.45125
+    },
+    {
+      "bootstrap_se": 27832.01233,
+      "comparison": "paired_delta",
+      "estimate": 5292120.525,
+      "lower": 5245002.91,
+      "metric": "mean_loss",
+      "scenario": "recession",
+      "upper": 5349567.335625
+    },
+    {
+      "bootstrap_se": 459279.829947,
+      "comparison": "absolute",
+      "estimate": 29289000.0,
+      "lower": 28312725.0,
+      "metric": "var",
+      "scenario": "recession",
+      "upper": 29921000.0
+    },
+    {
+      "bootstrap_se": 350376.560495,
+      "comparison": "paired_delta",
+      "estimate": 14149000.0,
+      "lower": 13413162.5,
+      "metric": "var",
+      "scenario": "recession",
+      "upper": 14671525.0
+    },
+    {
+      "bootstrap_se": 399824.394782,
+      "comparison": "absolute",
+      "estimate": 33601695.0,
+      "lower": 32777450.1875,
+      "metric": "es",
+      "scenario": "recession",
+      "upper": 34353958.25
+    },
+    {
+      "bootstrap_se": 245026.754207,
+      "comparison": "paired_delta",
+      "estimate": 15125470.0,
+      "lower": 14690894.125,
+      "metric": "es",
+      "scenario": "recession",
+      "upper": 15616604.5
+    },
+    {
+      "bootstrap_se": 81010.582028,
+      "comparison": "absolute",
+      "estimate": 19230306.0125,
+      "lower": 19100438.530938,
+      "metric": "mean_loss",
+      "scenario": "severe",
+      "upper": 19392213.833437
+    },
+    {
+      "bootstrap_se": 62852.15371,
+      "comparison": "paired_delta",
+      "estimate": 15850032.3875,
+      "lower": 15745773.965625,
+      "metric": "mean_loss",
+      "scenario": "severe",
+      "upper": 15979647.058125
+    },
+    {
+      "bootstrap_se": 411794.593515,
+      "comparison": "absolute",
+      "estimate": 51326000.0,
+      "lower": 50663868.75,
+      "metric": "var",
+      "scenario": "severe",
+      "upper": 52296750.0
+    },
+    {
+      "bootstrap_se": 348071.677988,
+      "comparison": "paired_delta",
+      "estimate": 36186000.0,
+      "lower": 35426231.25,
+      "metric": "var",
+      "scenario": "severe",
+      "upper": 36936750.0
+    },
+    {
+      "bootstrap_se": 518027.625291,
+      "comparison": "absolute",
+      "estimate": 57175566.25,
+      "lower": 56201846.59375,
+      "metric": "es",
+      "scenario": "severe",
+      "upper": 58147089.0
+    },
+    {
+      "bootstrap_se": 383686.205256,
+      "comparison": "paired_delta",
+      "estimate": 38699341.25,
+      "lower": 37926439.40625,
+      "metric": "es",
+      "scenario": "severe",
+      "upper": 39466822.0
+    },
+    {
+      "bootstrap_se": 13788.713097,
+      "comparison": "absolute",
+      "estimate": 3371452.0,
+      "lower": 3345040.753125,
+      "metric": "mean_loss",
+      "scenario": "independent",
+      "upper": 3397919.796875
+    },
+    {
+      "bootstrap_se": 21514.214315,
+      "comparison": "paired_delta",
+      "estimate": -8821.625,
+      "lower": -51460.10625,
+      "metric": "mean_loss",
+      "scenario": "independent",
+      "upper": 32210.73125
+    },
+    {
+      "bootstrap_se": 56066.916839,
+      "comparison": "absolute",
+      "estimate": 8717500.0,
+      "lower": 8590000.0,
+      "metric": "var",
+      "scenario": "independent",
+      "upper": 8800125.0
+    },
+    {
+      "bootstrap_se": 274195.77791,
+      "comparison": "paired_delta",
+      "estimate": -6422500.0,
+      "lower": -6984062.5,
+      "metric": "var",
+      "scenario": "independent",
+      "upper": -5974250.0
+    },
+    {
+      "bootstrap_se": 87970.423873,
+      "comparison": "absolute",
+      "estimate": 9621450.0,
+      "lower": 9457187.1875,
+      "metric": "es",
+      "scenario": "independent",
+      "upper": 9780681.875
+    },
+    {
+      "bootstrap_se": 330784.498859,
+      "comparison": "paired_delta",
+      "estimate": -8854775.0,
+      "lower": -9519946.5625,
+      "metric": "es",
+      "scenario": "independent",
+      "upper": -8212317.5
+    },
+    {
+      "bootstrap_se": 32637.007271,
+      "comparison": "absolute",
+      "estimate": 3378837.875,
+      "lower": 3321930.125,
+      "metric": "mean_loss",
+      "scenario": "high_correlation",
+      "upper": 3445472.778125
+    },
+    {
+      "bootstrap_se": 14734.401817,
+      "comparison": "paired_delta",
+      "estimate": -1435.75,
+      "lower": -29252.103125,
+      "metric": "mean_loss",
+      "scenario": "high_correlation",
+      "upper": 29035.7
+    },
+    {
+      "bootstrap_se": 468870.042526,
+      "comparison": "absolute",
+      "estimate": 22085000.0,
+      "lower": 21157375.0,
+      "metric": "var",
+      "scenario": "high_correlation",
+      "upper": 22839062.5
+    },
+    {
+      "bootstrap_se": 335373.356711,
+      "comparison": "paired_delta",
+      "estimate": 6945000.0,
+      "lower": 6232250.0,
+      "metric": "var",
+      "scenario": "high_correlation",
+      "upper": 7513812.5
+    },
+    {
+      "bootstrap_se": 524248.345592,
+      "comparison": "absolute",
+      "estimate": 27706337.5,
+      "lower": 26589736.25,
+      "metric": "es",
+      "scenario": "high_correlation",
+      "upper": 28671444.6875
+    },
+    {
+      "bootstrap_se": 309885.29554,
+      "comparison": "paired_delta",
+      "estimate": 9230112.5,
+      "lower": 8630630.0,
+      "metric": "es",
+      "scenario": "high_correlation",
+      "upper": 9815962.1875
+    }
+  ],
+  "loans": 160,
+  "method": "paired_path_percentile_bootstrap",
+  "obligors": 80,
+  "resamples": 300,
+  "resampling_fingerprint": "7d78c718887ec1e8b63e93db1b6f51b881fbb02c3016e4a0dff38f6f1b60c143",
+  "scenario_names": [
+    "baseline",
+    "recession",
+    "severe",
+    "independent",
+    "high_correlation"
+  ],
+  "schema_version": 1,
+  "seed": 20261002,
+  "simulation_paths": 20000,
+  "tail_mass": 200.0,
+  "uncertainty_scope": "Monte Carlo sampling under fixed portfolio and model parameters",
+  "warnings": []
+}

@@ -30,4 +30,6 @@
 
 ## 建议展示路径
 
+升级展示：打开 [尾部精度报告](https://dev-belly.github.io/StressAtlas/precision/)，把 99% 风险水平与 95% 估计精度区间分开解释；展示所有情景共用重采样下标的代码和常数平移测试，说明配对的 VaR/ES 差异并不是差异损失的 VaR/ES。完整方法与边界见 [PRECISION.md](PRECISION.md)。
+
 先看 `demo/scenarios.csv` 中 independent、baseline、high_correlation 的解析 EL 与 ES；再看同一借款人拆分不变性测试；最后讲 `[0,0,10,10]` 的 VaR/ES 反例及并列值行业贡献测试。

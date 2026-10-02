@@ -1,0 +1,16 @@
+{
+  "engine": "stressatlas/precision/1",
+  "files": {
+    "inputs.json": "ccd76b51af33578e46a6464e261039cc062b4e058f2e57e84817d425c90b2ebb",
+    "intervals.csv": "c74d4e235d581b5bfef48132354a973fbe8a27af92f155e408b774951559f5a7",
+    "report.html": "79188465925b7e4457672b1ee8987999e3d279a1e433b9628ee56b767d5f5ae5",
+    "resamples.csv": "10d20e570044a9e97e34b229430e140c03f543c172904e26cb4fcd54b097480c",
+    "summary.json": "b94f991282150977ebf5653cc05d1f241fc389e5c443db86d015165b9b160833"
+  },
+  "runtime": {
+    "numpy": "2.3.5",
+    "python": "3.12.14",
+    "scipy": "1.17.0"
+  },
+  "schema_version": 1
+}
