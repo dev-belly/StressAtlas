@@ -1,4 +1,5 @@
 from dataclasses import replace
+from decimal import Inexact, ROUND_DOWN, localcontext
 import math
 import unittest
 
@@ -134,6 +135,28 @@ class ModelTests(unittest.TestCase):
 
 
 class TailTests(unittest.TestCase):
+    def test_tail_ranks_ignore_callers_decimal_context(self):
+        losses = list(range(101))
+        expected = tail_metrics(losses, .985)
+        self.assertEqual(expected["var"], 99)
+        self.assertEqual(expected["tail_mass"], 1.515)
+        with localcontext() as context:
+            context.prec = 2
+            context.rounding = ROUND_DOWN
+            context.traps[Inexact] = True
+            self.assertEqual(tail_metrics(losses, .985), expected)
+
+    def test_extreme_valid_tail_levels_keep_valid_empirical_ranks(self):
+        for alpha, expected_var in ((5e-324, 0), (math.nextafter(1.0, 0.0), 100)):
+            with self.subTest(alpha=alpha), localcontext() as context:
+                context.prec = 1
+                context.Emax = 1
+                context.Emin = -1
+                result = tail_metrics(list(range(101)), alpha)
+                self.assertEqual(result["var"], expected_var)
+                self.assertGreater(result["tail_mass"], 0)
+                self.assertGreaterEqual(result["es"], result["var"])
+
     def test_fractional_tail_mass_has_hand_calculated_es(self):
         result=tail_metrics([0,1,2,3,4],.5)
         self.assertEqual(result["var"],2)
