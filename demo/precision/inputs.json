@@ -1,0 +1,1514 @@
+{
+  "config": {
+    "alpha": 0.99,
+    "global_share": 0.5,
+    "paths": 20000,
+    "seed": 20261001
+  },
+  "data_kind": "synthetic",
+  "portfolio": [
+    {
+      "ead": 500000.0,
+      "lgd": 0.4,
+      "loan_id": "L000-0",
+      "obligor_id": "B000",
+      "pd": 0.018,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 650000.0,
+      "lgd": 0.45,
+      "loan_id": "L000-1",
+      "obligor_id": "B000",
+      "pd": 0.018,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 600000.0,
+      "lgd": 0.45,
+      "loan_id": "L001-0",
+      "obligor_id": "B001",
+      "pd": 0.037000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 750000.0,
+      "lgd": 0.5,
+      "loan_id": "L001-1",
+      "obligor_id": "B001",
+      "pd": 0.037000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 700000.0,
+      "lgd": 0.5,
+      "loan_id": "L002-0",
+      "obligor_id": "B002",
+      "pd": 0.059,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 850000.0,
+      "lgd": 0.55,
+      "loan_id": "L002-1",
+      "obligor_id": "B002",
+      "pd": 0.059,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 800000.0,
+      "lgd": 0.55,
+      "loan_id": "L003-0",
+      "obligor_id": "B003",
+      "pd": 0.031,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 950000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L003-1",
+      "obligor_id": "B003",
+      "pd": 0.031,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 900000.0,
+      "lgd": 0.4,
+      "loan_id": "L004-0",
+      "obligor_id": "B004",
+      "pd": 0.026,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1050000.0,
+      "lgd": 0.45,
+      "loan_id": "L004-1",
+      "obligor_id": "B004",
+      "pd": 0.026,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1000000.0,
+      "lgd": 0.45,
+      "loan_id": "L005-0",
+      "obligor_id": "B005",
+      "pd": 0.045000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1150000.0,
+      "lgd": 0.5,
+      "loan_id": "L005-1",
+      "obligor_id": "B005",
+      "pd": 0.045000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1100000.0,
+      "lgd": 0.5,
+      "loan_id": "L006-0",
+      "obligor_id": "B006",
+      "pd": 0.067,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1250000.0,
+      "lgd": 0.55,
+      "loan_id": "L006-1",
+      "obligor_id": "B006",
+      "pd": 0.067,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1200000.0,
+      "lgd": 0.55,
+      "loan_id": "L007-0",
+      "obligor_id": "B007",
+      "pd": 0.025,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1350000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L007-1",
+      "obligor_id": "B007",
+      "pd": 0.025,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1300000.0,
+      "lgd": 0.4,
+      "loan_id": "L008-0",
+      "obligor_id": "B008",
+      "pd": 0.019999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1450000.0,
+      "lgd": 0.45,
+      "loan_id": "L008-1",
+      "obligor_id": "B008",
+      "pd": 0.019999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1400000.0,
+      "lgd": 0.45,
+      "loan_id": "L009-0",
+      "obligor_id": "B009",
+      "pd": 0.03900000000000001,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1550000.0,
+      "lgd": 0.5,
+      "loan_id": "L009-1",
+      "obligor_id": "B009",
+      "pd": 0.03900000000000001,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1500000.0,
+      "lgd": 0.5,
+      "loan_id": "L010-0",
+      "obligor_id": "B010",
+      "pd": 0.061,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1650000.0,
+      "lgd": 0.55,
+      "loan_id": "L010-1",
+      "obligor_id": "B010",
+      "pd": 0.061,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 500000.0,
+      "lgd": 0.55,
+      "loan_id": "L011-0",
+      "obligor_id": "B011",
+      "pd": 0.033,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 650000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L011-1",
+      "obligor_id": "B011",
+      "pd": 0.033,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 600000.0,
+      "lgd": 0.4,
+      "loan_id": "L012-0",
+      "obligor_id": "B012",
+      "pd": 0.027999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 750000.0,
+      "lgd": 0.45,
+      "loan_id": "L012-1",
+      "obligor_id": "B012",
+      "pd": 0.027999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 700000.0,
+      "lgd": 0.45,
+      "loan_id": "L013-0",
+      "obligor_id": "B013",
+      "pd": 0.047,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 850000.0,
+      "lgd": 0.5,
+      "loan_id": "L013-1",
+      "obligor_id": "B013",
+      "pd": 0.047,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 800000.0,
+      "lgd": 0.5,
+      "loan_id": "L014-0",
+      "obligor_id": "B014",
+      "pd": 0.055,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 950000.0,
+      "lgd": 0.55,
+      "loan_id": "L014-1",
+      "obligor_id": "B014",
+      "pd": 0.055,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 900000.0,
+      "lgd": 0.55,
+      "loan_id": "L015-0",
+      "obligor_id": "B015",
+      "pd": 0.027000000000000003,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1050000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L015-1",
+      "obligor_id": "B015",
+      "pd": 0.027000000000000003,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1000000.0,
+      "lgd": 0.4,
+      "loan_id": "L016-0",
+      "obligor_id": "B016",
+      "pd": 0.022,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1150000.0,
+      "lgd": 0.45,
+      "loan_id": "L016-1",
+      "obligor_id": "B016",
+      "pd": 0.022,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1100000.0,
+      "lgd": 0.45,
+      "loan_id": "L017-0",
+      "obligor_id": "B017",
+      "pd": 0.041,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1250000.0,
+      "lgd": 0.5,
+      "loan_id": "L017-1",
+      "obligor_id": "B017",
+      "pd": 0.041,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1200000.0,
+      "lgd": 0.5,
+      "loan_id": "L018-0",
+      "obligor_id": "B018",
+      "pd": 0.063,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1350000.0,
+      "lgd": 0.55,
+      "loan_id": "L018-1",
+      "obligor_id": "B018",
+      "pd": 0.063,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1300000.0,
+      "lgd": 0.55,
+      "loan_id": "L019-0",
+      "obligor_id": "B019",
+      "pd": 0.035,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1450000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L019-1",
+      "obligor_id": "B019",
+      "pd": 0.035,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1400000.0,
+      "lgd": 0.4,
+      "loan_id": "L020-0",
+      "obligor_id": "B020",
+      "pd": 0.03,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1550000.0,
+      "lgd": 0.45,
+      "loan_id": "L020-1",
+      "obligor_id": "B020",
+      "pd": 0.03,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1500000.0,
+      "lgd": 0.45,
+      "loan_id": "L021-0",
+      "obligor_id": "B021",
+      "pd": 0.035,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1650000.0,
+      "lgd": 0.5,
+      "loan_id": "L021-1",
+      "obligor_id": "B021",
+      "pd": 0.035,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 500000.0,
+      "lgd": 0.5,
+      "loan_id": "L022-0",
+      "obligor_id": "B022",
+      "pd": 0.057,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 650000.0,
+      "lgd": 0.55,
+      "loan_id": "L022-1",
+      "obligor_id": "B022",
+      "pd": 0.057,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 600000.0,
+      "lgd": 0.55,
+      "loan_id": "L023-0",
+      "obligor_id": "B023",
+      "pd": 0.029,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 750000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L023-1",
+      "obligor_id": "B023",
+      "pd": 0.029,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 700000.0,
+      "lgd": 0.4,
+      "loan_id": "L024-0",
+      "obligor_id": "B024",
+      "pd": 0.024,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 850000.0,
+      "lgd": 0.45,
+      "loan_id": "L024-1",
+      "obligor_id": "B024",
+      "pd": 0.024,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 800000.0,
+      "lgd": 0.45,
+      "loan_id": "L025-0",
+      "obligor_id": "B025",
+      "pd": 0.043000000000000003,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 950000.0,
+      "lgd": 0.5,
+      "loan_id": "L025-1",
+      "obligor_id": "B025",
+      "pd": 0.043000000000000003,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 900000.0,
+      "lgd": 0.5,
+      "loan_id": "L026-0",
+      "obligor_id": "B026",
+      "pd": 0.065,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1050000.0,
+      "lgd": 0.55,
+      "loan_id": "L026-1",
+      "obligor_id": "B026",
+      "pd": 0.065,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1000000.0,
+      "lgd": 0.55,
+      "loan_id": "L027-0",
+      "obligor_id": "B027",
+      "pd": 0.037000000000000005,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1150000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L027-1",
+      "obligor_id": "B027",
+      "pd": 0.037000000000000005,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1100000.0,
+      "lgd": 0.4,
+      "loan_id": "L028-0",
+      "obligor_id": "B028",
+      "pd": 0.018,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1250000.0,
+      "lgd": 0.45,
+      "loan_id": "L028-1",
+      "obligor_id": "B028",
+      "pd": 0.018,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1200000.0,
+      "lgd": 0.45,
+      "loan_id": "L029-0",
+      "obligor_id": "B029",
+      "pd": 0.037000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1350000.0,
+      "lgd": 0.5,
+      "loan_id": "L029-1",
+      "obligor_id": "B029",
+      "pd": 0.037000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1300000.0,
+      "lgd": 0.5,
+      "loan_id": "L030-0",
+      "obligor_id": "B030",
+      "pd": 0.059,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1450000.0,
+      "lgd": 0.55,
+      "loan_id": "L030-1",
+      "obligor_id": "B030",
+      "pd": 0.059,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1400000.0,
+      "lgd": 0.55,
+      "loan_id": "L031-0",
+      "obligor_id": "B031",
+      "pd": 0.031,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1550000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L031-1",
+      "obligor_id": "B031",
+      "pd": 0.031,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1500000.0,
+      "lgd": 0.4,
+      "loan_id": "L032-0",
+      "obligor_id": "B032",
+      "pd": 0.026,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1650000.0,
+      "lgd": 0.45,
+      "loan_id": "L032-1",
+      "obligor_id": "B032",
+      "pd": 0.026,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 500000.0,
+      "lgd": 0.45,
+      "loan_id": "L033-0",
+      "obligor_id": "B033",
+      "pd": 0.045000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 650000.0,
+      "lgd": 0.5,
+      "loan_id": "L033-1",
+      "obligor_id": "B033",
+      "pd": 0.045000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 600000.0,
+      "lgd": 0.5,
+      "loan_id": "L034-0",
+      "obligor_id": "B034",
+      "pd": 0.067,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 750000.0,
+      "lgd": 0.55,
+      "loan_id": "L034-1",
+      "obligor_id": "B034",
+      "pd": 0.067,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 700000.0,
+      "lgd": 0.55,
+      "loan_id": "L035-0",
+      "obligor_id": "B035",
+      "pd": 0.025,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 850000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L035-1",
+      "obligor_id": "B035",
+      "pd": 0.025,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 800000.0,
+      "lgd": 0.4,
+      "loan_id": "L036-0",
+      "obligor_id": "B036",
+      "pd": 0.019999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 950000.0,
+      "lgd": 0.45,
+      "loan_id": "L036-1",
+      "obligor_id": "B036",
+      "pd": 0.019999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 900000.0,
+      "lgd": 0.45,
+      "loan_id": "L037-0",
+      "obligor_id": "B037",
+      "pd": 0.03900000000000001,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1050000.0,
+      "lgd": 0.5,
+      "loan_id": "L037-1",
+      "obligor_id": "B037",
+      "pd": 0.03900000000000001,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1000000.0,
+      "lgd": 0.5,
+      "loan_id": "L038-0",
+      "obligor_id": "B038",
+      "pd": 0.061,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1150000.0,
+      "lgd": 0.55,
+      "loan_id": "L038-1",
+      "obligor_id": "B038",
+      "pd": 0.061,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1100000.0,
+      "lgd": 0.55,
+      "loan_id": "L039-0",
+      "obligor_id": "B039",
+      "pd": 0.033,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1250000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L039-1",
+      "obligor_id": "B039",
+      "pd": 0.033,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1200000.0,
+      "lgd": 0.4,
+      "loan_id": "L040-0",
+      "obligor_id": "B040",
+      "pd": 0.027999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1350000.0,
+      "lgd": 0.45,
+      "loan_id": "L040-1",
+      "obligor_id": "B040",
+      "pd": 0.027999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1300000.0,
+      "lgd": 0.45,
+      "loan_id": "L041-0",
+      "obligor_id": "B041",
+      "pd": 0.047,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1450000.0,
+      "lgd": 0.5,
+      "loan_id": "L041-1",
+      "obligor_id": "B041",
+      "pd": 0.047,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1400000.0,
+      "lgd": 0.5,
+      "loan_id": "L042-0",
+      "obligor_id": "B042",
+      "pd": 0.055,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1550000.0,
+      "lgd": 0.55,
+      "loan_id": "L042-1",
+      "obligor_id": "B042",
+      "pd": 0.055,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1500000.0,
+      "lgd": 0.55,
+      "loan_id": "L043-0",
+      "obligor_id": "B043",
+      "pd": 0.027000000000000003,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1650000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L043-1",
+      "obligor_id": "B043",
+      "pd": 0.027000000000000003,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 500000.0,
+      "lgd": 0.4,
+      "loan_id": "L044-0",
+      "obligor_id": "B044",
+      "pd": 0.022,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 650000.0,
+      "lgd": 0.45,
+      "loan_id": "L044-1",
+      "obligor_id": "B044",
+      "pd": 0.022,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 600000.0,
+      "lgd": 0.45,
+      "loan_id": "L045-0",
+      "obligor_id": "B045",
+      "pd": 0.041,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 750000.0,
+      "lgd": 0.5,
+      "loan_id": "L045-1",
+      "obligor_id": "B045",
+      "pd": 0.041,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 700000.0,
+      "lgd": 0.5,
+      "loan_id": "L046-0",
+      "obligor_id": "B046",
+      "pd": 0.063,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 850000.0,
+      "lgd": 0.55,
+      "loan_id": "L046-1",
+      "obligor_id": "B046",
+      "pd": 0.063,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 800000.0,
+      "lgd": 0.55,
+      "loan_id": "L047-0",
+      "obligor_id": "B047",
+      "pd": 0.035,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 950000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L047-1",
+      "obligor_id": "B047",
+      "pd": 0.035,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 900000.0,
+      "lgd": 0.4,
+      "loan_id": "L048-0",
+      "obligor_id": "B048",
+      "pd": 0.03,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1050000.0,
+      "lgd": 0.45,
+      "loan_id": "L048-1",
+      "obligor_id": "B048",
+      "pd": 0.03,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1000000.0,
+      "lgd": 0.45,
+      "loan_id": "L049-0",
+      "obligor_id": "B049",
+      "pd": 0.035,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1150000.0,
+      "lgd": 0.5,
+      "loan_id": "L049-1",
+      "obligor_id": "B049",
+      "pd": 0.035,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1100000.0,
+      "lgd": 0.5,
+      "loan_id": "L050-0",
+      "obligor_id": "B050",
+      "pd": 0.057,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1250000.0,
+      "lgd": 0.55,
+      "loan_id": "L050-1",
+      "obligor_id": "B050",
+      "pd": 0.057,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1200000.0,
+      "lgd": 0.55,
+      "loan_id": "L051-0",
+      "obligor_id": "B051",
+      "pd": 0.029,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1350000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L051-1",
+      "obligor_id": "B051",
+      "pd": 0.029,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1300000.0,
+      "lgd": 0.4,
+      "loan_id": "L052-0",
+      "obligor_id": "B052",
+      "pd": 0.024,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1450000.0,
+      "lgd": 0.45,
+      "loan_id": "L052-1",
+      "obligor_id": "B052",
+      "pd": 0.024,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1400000.0,
+      "lgd": 0.45,
+      "loan_id": "L053-0",
+      "obligor_id": "B053",
+      "pd": 0.043000000000000003,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1550000.0,
+      "lgd": 0.5,
+      "loan_id": "L053-1",
+      "obligor_id": "B053",
+      "pd": 0.043000000000000003,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1500000.0,
+      "lgd": 0.5,
+      "loan_id": "L054-0",
+      "obligor_id": "B054",
+      "pd": 0.065,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1650000.0,
+      "lgd": 0.55,
+      "loan_id": "L054-1",
+      "obligor_id": "B054",
+      "pd": 0.065,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 500000.0,
+      "lgd": 0.55,
+      "loan_id": "L055-0",
+      "obligor_id": "B055",
+      "pd": 0.037000000000000005,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 650000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L055-1",
+      "obligor_id": "B055",
+      "pd": 0.037000000000000005,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 600000.0,
+      "lgd": 0.4,
+      "loan_id": "L056-0",
+      "obligor_id": "B056",
+      "pd": 0.018,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 750000.0,
+      "lgd": 0.45,
+      "loan_id": "L056-1",
+      "obligor_id": "B056",
+      "pd": 0.018,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 700000.0,
+      "lgd": 0.45,
+      "loan_id": "L057-0",
+      "obligor_id": "B057",
+      "pd": 0.037000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 850000.0,
+      "lgd": 0.5,
+      "loan_id": "L057-1",
+      "obligor_id": "B057",
+      "pd": 0.037000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 800000.0,
+      "lgd": 0.5,
+      "loan_id": "L058-0",
+      "obligor_id": "B058",
+      "pd": 0.059,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 950000.0,
+      "lgd": 0.55,
+      "loan_id": "L058-1",
+      "obligor_id": "B058",
+      "pd": 0.059,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 900000.0,
+      "lgd": 0.55,
+      "loan_id": "L059-0",
+      "obligor_id": "B059",
+      "pd": 0.031,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1050000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L059-1",
+      "obligor_id": "B059",
+      "pd": 0.031,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1000000.0,
+      "lgd": 0.4,
+      "loan_id": "L060-0",
+      "obligor_id": "B060",
+      "pd": 0.026,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1150000.0,
+      "lgd": 0.45,
+      "loan_id": "L060-1",
+      "obligor_id": "B060",
+      "pd": 0.026,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1100000.0,
+      "lgd": 0.45,
+      "loan_id": "L061-0",
+      "obligor_id": "B061",
+      "pd": 0.045000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1250000.0,
+      "lgd": 0.5,
+      "loan_id": "L061-1",
+      "obligor_id": "B061",
+      "pd": 0.045000000000000005,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1200000.0,
+      "lgd": 0.5,
+      "loan_id": "L062-0",
+      "obligor_id": "B062",
+      "pd": 0.067,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1350000.0,
+      "lgd": 0.55,
+      "loan_id": "L062-1",
+      "obligor_id": "B062",
+      "pd": 0.067,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1300000.0,
+      "lgd": 0.55,
+      "loan_id": "L063-0",
+      "obligor_id": "B063",
+      "pd": 0.025,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1450000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L063-1",
+      "obligor_id": "B063",
+      "pd": 0.025,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1400000.0,
+      "lgd": 0.4,
+      "loan_id": "L064-0",
+      "obligor_id": "B064",
+      "pd": 0.019999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1550000.0,
+      "lgd": 0.45,
+      "loan_id": "L064-1",
+      "obligor_id": "B064",
+      "pd": 0.019999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1500000.0,
+      "lgd": 0.45,
+      "loan_id": "L065-0",
+      "obligor_id": "B065",
+      "pd": 0.03900000000000001,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1650000.0,
+      "lgd": 0.5,
+      "loan_id": "L065-1",
+      "obligor_id": "B065",
+      "pd": 0.03900000000000001,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 500000.0,
+      "lgd": 0.5,
+      "loan_id": "L066-0",
+      "obligor_id": "B066",
+      "pd": 0.061,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 650000.0,
+      "lgd": 0.55,
+      "loan_id": "L066-1",
+      "obligor_id": "B066",
+      "pd": 0.061,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 600000.0,
+      "lgd": 0.55,
+      "loan_id": "L067-0",
+      "obligor_id": "B067",
+      "pd": 0.033,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 750000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L067-1",
+      "obligor_id": "B067",
+      "pd": 0.033,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 700000.0,
+      "lgd": 0.4,
+      "loan_id": "L068-0",
+      "obligor_id": "B068",
+      "pd": 0.027999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 850000.0,
+      "lgd": 0.45,
+      "loan_id": "L068-1",
+      "obligor_id": "B068",
+      "pd": 0.027999999999999997,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 800000.0,
+      "lgd": 0.45,
+      "loan_id": "L069-0",
+      "obligor_id": "B069",
+      "pd": 0.047,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 950000.0,
+      "lgd": 0.5,
+      "loan_id": "L069-1",
+      "obligor_id": "B069",
+      "pd": 0.047,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 900000.0,
+      "lgd": 0.5,
+      "loan_id": "L070-0",
+      "obligor_id": "B070",
+      "pd": 0.055,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1050000.0,
+      "lgd": 0.55,
+      "loan_id": "L070-1",
+      "obligor_id": "B070",
+      "pd": 0.055,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1000000.0,
+      "lgd": 0.55,
+      "loan_id": "L071-0",
+      "obligor_id": "B071",
+      "pd": 0.027000000000000003,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1150000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L071-1",
+      "obligor_id": "B071",
+      "pd": 0.027000000000000003,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1100000.0,
+      "lgd": 0.4,
+      "loan_id": "L072-0",
+      "obligor_id": "B072",
+      "pd": 0.022,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1250000.0,
+      "lgd": 0.45,
+      "loan_id": "L072-1",
+      "obligor_id": "B072",
+      "pd": 0.022,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1200000.0,
+      "lgd": 0.45,
+      "loan_id": "L073-0",
+      "obligor_id": "B073",
+      "pd": 0.041,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1350000.0,
+      "lgd": 0.5,
+      "loan_id": "L073-1",
+      "obligor_id": "B073",
+      "pd": 0.041,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 1300000.0,
+      "lgd": 0.5,
+      "loan_id": "L074-0",
+      "obligor_id": "B074",
+      "pd": 0.063,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1450000.0,
+      "lgd": 0.55,
+      "loan_id": "L074-1",
+      "obligor_id": "B074",
+      "pd": 0.063,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 1400000.0,
+      "lgd": 0.55,
+      "loan_id": "L075-0",
+      "obligor_id": "B075",
+      "pd": 0.035,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1550000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L075-1",
+      "obligor_id": "B075",
+      "pd": 0.035,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 1500000.0,
+      "lgd": 0.4,
+      "loan_id": "L076-0",
+      "obligor_id": "B076",
+      "pd": 0.03,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 1650000.0,
+      "lgd": 0.45,
+      "loan_id": "L076-1",
+      "obligor_id": "B076",
+      "pd": 0.03,
+      "rho": 0.15,
+      "sector": "manufacturing"
+    },
+    {
+      "ead": 500000.0,
+      "lgd": 0.45,
+      "loan_id": "L077-0",
+      "obligor_id": "B077",
+      "pd": 0.035,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 650000.0,
+      "lgd": 0.5,
+      "loan_id": "L077-1",
+      "obligor_id": "B077",
+      "pd": 0.035,
+      "rho": 0.12,
+      "sector": "retail"
+    },
+    {
+      "ead": 600000.0,
+      "lgd": 0.5,
+      "loan_id": "L078-0",
+      "obligor_id": "B078",
+      "pd": 0.057,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 750000.0,
+      "lgd": 0.55,
+      "loan_id": "L078-1",
+      "obligor_id": "B078",
+      "pd": 0.057,
+      "rho": 0.25,
+      "sector": "real_estate"
+    },
+    {
+      "ead": 700000.0,
+      "lgd": 0.55,
+      "loan_id": "L079-0",
+      "obligor_id": "B079",
+      "pd": 0.029,
+      "rho": 0.18,
+      "sector": "technology"
+    },
+    {
+      "ead": 850000.0,
+      "lgd": 0.6000000000000001,
+      "loan_id": "L079-1",
+      "obligor_id": "B079",
+      "pd": 0.029,
+      "rho": 0.18,
+      "sector": "technology"
+    }
+  ],
+  "precision": {
+    "confidence_level": 0.95,
+    "resamples": 300,
+    "seed": 20261002
+  },
+  "scenarios": [
+    {
+      "ead_multiplier": 1.0,
+      "lgd_add": 0.0,
+      "name": "baseline",
+      "pd_odds_multiplier": 1.0,
+      "rho_multiplier": 1.0,
+      "sector_shocks": []
+    },
+    {
+      "ead_multiplier": 1.0,
+      "lgd_add": 0.08,
+      "name": "recession",
+      "pd_odds_multiplier": 2,
+      "rho_multiplier": 1.0,
+      "sector_shocks": [
+        {
+          "ead_multiplier": 1.0,
+          "lgd_add": 0.0,
+          "pd_odds_multiplier": 1.5,
+          "rho_multiplier": 1.0,
+          "sector": "real_estate"
+        }
+      ]
+    },
+    {
+      "ead_multiplier": 1.1,
+      "lgd_add": 0.15,
+      "name": "severe",
+      "pd_odds_multiplier": 4,
+      "rho_multiplier": 1.0,
+      "sector_shocks": [
+        {
+          "ead_multiplier": 1.0,
+          "lgd_add": 0.0,
+          "pd_odds_multiplier": 1.5,
+          "rho_multiplier": 1.0,
+          "sector": "real_estate"
+        }
+      ]
+    },
+    {
+      "ead_multiplier": 1.0,
+      "lgd_add": 0.0,
+      "name": "independent",
+      "pd_odds_multiplier": 1.0,
+      "rho_multiplier": 0,
+      "sector_shocks": []
+    },
+    {
+      "ead_multiplier": 1.0,
+      "lgd_add": 0.0,
+      "name": "high_correlation",
+      "pd_odds_multiplier": 1.0,
+      "rho_multiplier": 2,
+      "sector_shocks": []
+    }
+  ]
+}

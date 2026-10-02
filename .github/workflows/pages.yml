@@ -21,11 +21,13 @@ jobs:
           python -m pip install -r requirements-replay.txt
           python -m pip install -e .
           stressatlas verify --out demo
+          stressatlas verify-precision --out demo/precision
       - name: Prepare the standalone report
         run: |
           mkdir _site
-          cp demo/* _site/
+          cp -R demo/. _site/
           cp demo/report.html _site/index.html
+          cp demo/precision/report.html _site/precision/index.html
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4

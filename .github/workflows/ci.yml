@@ -24,8 +24,12 @@ jobs:
       - name: Counterexamples and contracts
         run: python -m unittest discover -s tests -v
       - name: Replay committed evidence
-        run: stressatlas verify --out demo
+        run: |
+          stressatlas verify --out demo
+          stressatlas verify-precision --out demo/precision
       - name: Generate and replay a fresh report
         run: |
           stressatlas demo --out outputs
           stressatlas verify --out outputs
+          stressatlas precision --inputs demo/inputs.json --resamples 200 --bootstrap-seed 7 --out outputs/precision
+          stressatlas verify-precision --out outputs/precision
