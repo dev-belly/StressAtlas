@@ -30,7 +30,7 @@ If correlation is held fixed and PD, LGD and EAD are increased nonnegatively, lo
 
 Analytic expected loss is `sum(PD'_i × EAD'_position × LGD'_position)`. Correlation does not enter this mean under fixed deterministic severities. Its Monte Carlo estimate is the sample loss mean with ordinary sample SE.
 
-VaR uses the empirical inverse CDF: sort `N` losses in ascending order and take position `ceil(alpha*N)` (one-based). This is an explicit quantile convention, not NumPy's default linear interpolation.
+VaR uses the empirical inverse CDF: sort `N` losses in ascending order and take position `ceil(alpha*N)` (one-based). This is an explicit quantile convention, not NumPy's default linear interpolation. The decimal spelling of `alpha` is converted to an exact integer ratio for the rank and tail mass, so a caller's Decimal precision, rounding mode or traps cannot alter the selected tail.
 
 ES averages exactly the worst `q=N*(1-alpha)` path-equivalents. Descending losses get one unit of mass until the boundary; any fractional remainder is included. When several losses equal the boundary value, the remaining mass is divided equally among **all** boundary ties, then weights are normalized by `q`.
 

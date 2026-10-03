@@ -1,7 +1,7 @@
 """A global/sector Gaussian factor model; one default event per obligor."""
 
 from dataclasses import dataclass
-from decimal import Decimal, ROUND_CEILING
+from decimal import Decimal
 from hashlib import sha256
 import math
 
@@ -202,9 +202,11 @@ def tail_weights(losses, alpha=0.99):
     if not np.all(np.isfinite(losses)) or np.any(losses < 0):
         raise ValueError("losses must be finite and nonnegative")
     n = losses.size
-    alpha_decimal = Decimal(str(alpha))
-    tail_mass = float((Decimal(1) - alpha_decimal) * n)
-    quantile_index = int((alpha_decimal * n).to_integral_value(rounding=ROUND_CEILING)) - 1
+    # Preserve the declared decimal probability without inheriting the caller's
+    # Decimal precision, rounding mode, exponent bounds or accounting traps.
+    numerator, denominator = Decimal(str(alpha)).as_integer_ratio()
+    tail_mass = ((denominator - numerator) * n) / denominator
+    quantile_index = (numerator * n + denominator - 1) // denominator - 1
     order = np.argsort(-losses, kind="stable")
     weights = np.zeros(n)
     full = int(math.floor(tail_mass))
