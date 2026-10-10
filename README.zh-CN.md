@@ -8,6 +8,8 @@
 
 ## 快速运行
 
+**Linux / macOS**
+
 ```bash
 python -m pip install -r requirements-replay.txt
 python -m pip install -e .
@@ -16,7 +18,19 @@ stressatlas verify --out outputs
 python -m unittest discover -s tests -v
 ```
 
-打开 `outputs/report.html` 查看离线报告。需要 Python 3.11+、NumPy 和 SciPy。
+**Windows（PowerShell）**
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-replay.txt
+.\.venv\Scripts\python.exe -m pip install -e .
+.\.venv\Scripts\python.exe -m stressatlas demo --out outputs
+.\.venv\Scripts\python.exe -m stressatlas verify --out outputs
+```
+
+打开 `outputs/report.html` 查看离线报告。需要 Python 3.11+、NumPy 和 SciPy。Windows 命令直接调用虚拟环境，无需激活。
+
+保存的演示报告完整重放还要求固定版本及兼容的 Linux 数值构建。Windows 可在本机生成新报告，再完整验证该报告；仅固定版本不能保证跨平台随机驱动指纹相同。详见[数值重放边界](docs/METHODOLOGY.md#reproducibility-and-limitations)。
 
 ## 已实现的重点
 

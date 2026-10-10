@@ -10,7 +10,11 @@ from scipy.special import ndtri
 
 
 def finite(value, name, lower=0, upper=None, positive=False):
-    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < lower or (positive and value == lower) or (upper is not None and value > upper):
+    try:
+        valid = not isinstance(value, bool) and isinstance(value, (int, float)) and math.isfinite(value)
+    except OverflowError:
+        valid = False
+    if not valid or value < lower or (positive and value == lower) or (upper is not None and value > upper):
         raise ValueError(f"invalid {name}: {value!r}")
 
 
@@ -126,7 +130,7 @@ def stressed_terms(loan, scenario):
     sector = next((s for s in scenario.sector_shocks if s.sector == loan.sector), None)
     odds = scenario.pd_odds_multiplier * (sector.pd_odds_multiplier if sector else 1)
     # Exact endpoints: PD=0 stays 0; PD=1 stays 1.
-    pd = loan.pd * odds / (1 - loan.pd + loan.pd * odds)
+    pd = float(loan.pd) if loan.pd in (0, 1) else loan.pd * odds / (1 - loan.pd + loan.pd * odds)
     lgd = min(1.0, max(0.0, loan.lgd + scenario.lgd_add + (sector.lgd_add if sector else 0)))
     ead = loan.ead * scenario.ead_multiplier * (sector.ead_multiplier if sector else 1)
     rho = min(1.0, loan.rho * scenario.rho_multiplier * (sector.rho_multiplier if sector else 1))

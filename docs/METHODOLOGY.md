@@ -40,7 +40,9 @@ For each sector, `ES_contribution_s = sum(portfolio_tail_weight_k × sector_loss
 
 ## Reproducibility and limitations
 
-Reports record the full input portfolio/scenarios/config, random-driver SHA-256 fingerprint and numerical runtime versions. Six artifacts are hashed; semantic verification reruns all paths and reconstructs them. The sample CSV contains the first 200 paths only. Use the pinned NumPy/SciPy versions for byte-for-byte numerical replay; arbitrary numerical stacks are not promised identical artifacts.
+Reports record the full input portfolio/scenarios/config, random-driver SHA-256 fingerprint and numerical runtime versions. Six artifacts are hashed; semantic verification reruns all paths and reconstructs them. The sample CSV contains the first 200 paths only. Use the pinned NumPy/SciPy versions and a compatible numerical build for byte-for-byte replay. [NumPy's random-stream compatibility policy](https://numpy.org/doc/2.0/reference/random/compatibility.html) also requires matching build, environment and machine; version pins alone do not guarantee identical floating-point driver bytes across platforms.
+
+The committed reports use a Linux driver fingerprint. On Windows with the same Python 3.12.14, NumPy 2.3.5 and SciPy 1.17.0 versions, the saved examples' numerical result tables match, but the regenerated driver fingerprint differs. Strict semantic verification therefore rejects those saved Linux reports on Windows. Windows CI checks their committed file hashes after checkout, then generates new reports and fully verifies both the scenario and precision bundles locally. Linux CI continues to replay the saved reports. The verifier retains exact byte comparisons on every platform; it never substitutes a tolerance for a fingerprint mismatch. `.gitattributes` preserves LF endings so Git's Windows checkout conversion does not alter evidence hashes.
 
 The bank stores all normal drivers; memory is `O(N*obligors)`. Chunking limits intermediate latent/default arrays, not stored drivers. No dynamic exposure, migration, recovery correlation, fat-tailed factors, contagion, parameter uncertainty or tail-confidence interval is modeled.
 
