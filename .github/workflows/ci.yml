@@ -33,3 +33,52 @@ jobs:
           stressatlas verify --out outputs
           stressatlas precision --inputs demo/inputs.json --resamples 200 --bootstrap-seed 7 --out outputs/precision
           stressatlas verify-precision --out outputs/precision
+
+  windows:
+    name: Windows Python 3.12
+    runs-on: windows-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Enable Windows checkout conversion
+        run: git config --global core.autocrlf true
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the saved numerical stack
+        run: |
+          python -m pip install -r requirements-replay.txt
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m pip install -e .
+      - name: Counterexamples with the native text encoding
+        env:
+          PYTHONUTF8: '0'
+        run: python -m unittest discover -s tests -v
+      - name: Check committed manifest bytes after Windows checkout
+        run: |
+          @'
+          from hashlib import sha256
+          from pathlib import Path
+          from stressatlas.bundle import FILES, read_json
+          from stressatlas.precision import FILES as PRECISION_FILES
+          for directory, files in ((Path('demo'), FILES), (Path('demo/precision'), PRECISION_FILES)):
+              manifest = read_json(directory / 'manifest.json')
+              if set(manifest['files']) != set(files):
+                  raise SystemExit(f'Unexpected manifest members: {directory}')
+              for name in files:
+                  if sha256((directory / name).read_bytes()).hexdigest() != manifest['files'][name]:
+                      raise SystemExit(f'Hash mismatch: {directory / name}')
+              print(f'Checked {len(files)} committed file hashes: {directory}')
+          '@ | python -
+      - name: Generate and replay fresh reports
+        run: |
+          stressatlas demo --paths 2000 --seed 42 --out outputs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          stressatlas verify --out outputs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          stressatlas precision --inputs outputs/inputs.json --resamples 20 --bootstrap-seed 7 --out outputs/precision
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          stressatlas verify-precision --out outputs/precision

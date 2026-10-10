@@ -13,6 +13,8 @@ Scenario assumptions are explicit. All scenarios reuse the same global, sector a
 
 ## Run in one minute
 
+**Linux / macOS**
+
 ```bash
 git clone https://github.com/dev-belly/StressAtlas.git
 cd StressAtlas
@@ -23,7 +25,21 @@ stressatlas verify --out outputs
 python -m unittest discover -s tests -v
 ```
 
-Open `outputs/report.html` in a browser. It works offline and lets you switch between loss histograms and sector contributions. Python 3.11+; NumPy and SciPy. Locked numerical versions are supplied for saved-artifact replay.
+**Windows (PowerShell)**
+
+```powershell
+git clone https://github.com/dev-belly/StressAtlas.git
+cd StressAtlas
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-replay.txt
+.\.venv\Scripts\python.exe -m pip install -e .
+.\.venv\Scripts\python.exe -m stressatlas demo --out outputs
+.\.venv\Scripts\python.exe -m stressatlas verify --out outputs
+```
+
+Open `outputs/report.html` in a browser. It works offline and lets you switch between loss histograms and sector contributions. Python 3.11+; NumPy and SciPy. The Windows commands use the environment directly and do not require activation.
+
+Saved-demo semantic replay requires the pinned versions and a compatible Linux numerical build. On Windows, generate a new local report and fully verify that report; version pins alone do not guarantee identical driver fingerprints across platforms. See the [numerical replay boundaries](docs/METHODOLOGY.md#reproducibility-and-limitations).
 
 ```bash
 stressatlas demo --paths 100000 --seed 42 --out outputs-large

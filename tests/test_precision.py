@@ -173,11 +173,11 @@ class PrecisionBundleTests(unittest.TestCase):
                     summary["interval_rows"] += 1
                     content = canonical(summary)
                 else:
-                    content = (root/filename).read_text().replace("baseline", "fabricated", 1)
-                (root/filename).write_text(content)
+                    content = (root/filename).read_text(encoding="utf-8").replace("baseline", "fabricated", 1)
+                (root/filename).write_text(content, encoding="utf-8", newline="")
                 manifest = read_json(root/"manifest.json")
                 manifest["files"][filename] = sha256((root/filename).read_bytes()).hexdigest()
-                (root/"manifest.json").write_text(canonical(manifest))
+                (root/"manifest.json").write_text(canonical(manifest), encoding="utf-8", newline="")
                 with self.assertRaisesRegex(ValueError, "semantic replay"):
                     verify_precision_bundle(root)
 
@@ -187,14 +187,14 @@ class PrecisionBundleTests(unittest.TestCase):
             write_precision_bundle(self.data(), root)
             manifest = read_json(root/"manifest.json")
             manifest["files"]["../other"] = "0"*64
-            (root/"manifest.json").write_text(canonical(manifest))
+            (root/"manifest.json").write_text(canonical(manifest), encoding="utf-8", newline="")
             with self.assertRaisesRegex(ValueError, "unexpected artifact"):
                 verify_precision_bundle(root)
 
     def test_cli_generation_and_verification(self):
         with tempfile.TemporaryDirectory() as directory, contextlib.redirect_stdout(io.StringIO()):
             root = Path(directory)
-            (root/"input.json").write_text(canonical(demo_inputs(128, 2)))
+            (root/"input.json").write_text(canonical(demo_inputs(128, 2)), encoding="utf-8", newline="")
             self.assertEqual(main(["precision", "--inputs", str(root/"input.json"),
                                   "--resamples", "20", "--out", str(root/"out")]), 0)
             self.assertEqual(main(["verify-precision", "--out", str(root/"out")]), 0)

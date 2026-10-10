@@ -23,6 +23,15 @@ class ModelTests(unittest.TestCase):
         np.testing.assert_array_equal(result.losses,np.full(500,500.0))
         self.assertEqual(result.default_rates,{"B1":0.0,"B2":1.0})
 
+    def test_pd_endpoints_survive_underflowed_odds_multipliers(self):
+        loans=[loan(pd=0),loan(loan_id="L2",obligor_id="B2",pd=1)]
+        scenario=Scenario("tiny-odds",pd_odds_multiplier=5e-324,
+                          sector_shocks=(SectorShock("retail",pd_odds_multiplier=5e-324),))
+        self.assertEqual([stressed_terms(row,scenario)[0] for row in loans],[0,1])
+        result=simulate(loans,scenario,make_drivers(loans,100,1))
+        np.testing.assert_array_equal(result.losses,np.full(100,500.0))
+        self.assertEqual(result.default_rates,{"B1":0.0,"B2":1.0})
+
     def test_zero_lgd_has_zero_loss(self):
         loans=[loan(pd=1,lgd=0)]
         result=simulate(loans,Scenario("base"),make_drivers(loans,200,1))
@@ -205,6 +214,14 @@ class TailTests(unittest.TestCase):
 
 
 class ContractTests(unittest.TestCase):
+    def test_enormous_integer_amounts_and_probabilities_are_contract_errors(self):
+        for name in ("ead","pd","lgd","rho"):
+            with self.subTest(name=name),self.assertRaisesRegex(ValueError,"invalid " + name):
+                loan(**{name:10**400})
+        for name in ("pd_odds_multiplier","lgd_add","ead_multiplier","rho_multiplier"):
+            with self.subTest(name=name),self.assertRaisesRegex(ValueError,"invalid " + name):
+                Scenario("huge",**{name:10**400})
+
     def test_duplicate_loan_ids_are_rejected(self):
         with self.assertRaises(ValueError):
             validate_portfolio([loan(),loan()])
