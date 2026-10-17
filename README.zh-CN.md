@@ -8,29 +8,43 @@
 
 ## 快速运行
 
+需要 Python 3.11+ 和 Git。两条路径都直接调用虚拟环境，无需激活，
+并安装普通软件包；安装时需要联网，生成的合成报告可以离线查看。
+
 **Linux / macOS**
 
 ```bash
-python -m pip install -r requirements-replay.txt
-python -m pip install -e .
-stressatlas demo --out outputs
-stressatlas verify --out outputs
-python -m unittest discover -s tests -v
+git clone https://github.com/dev-belly/StressAtlas.git
+cd StressAtlas
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-replay.txt
+.venv/bin/python -m pip install .
+.venv/bin/python -m stressatlas demo --out outputs
+.venv/bin/python -m stressatlas verify --out outputs
 ```
 
 **Windows（PowerShell）**
 
 ```powershell
+git clone https://github.com/dev-belly/StressAtlas.git
+cd StressAtlas
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-replay.txt
-.\.venv\Scripts\python.exe -m pip install -e .
+.\.venv\Scripts\python.exe -m pip install .
 .\.venv\Scripts\python.exe -m stressatlas demo --out outputs
 .\.venv\Scripts\python.exe -m stressatlas verify --out outputs
 ```
 
-打开 `outputs/report.html` 查看离线报告。需要 Python 3.11+、NumPy 和 SciPy。Windows 命令直接调用虚拟环境，无需激活。
+打开 `outputs/report.html` 查看离线报告。默认合成样例包含 **160 笔贷款、80 个借款人、
+4 个行业和 20,000 次模拟**。核验成功会输出 `"verified": true`、`"files": 6`
+和 `"replayed_paths": 20000`。每次试用换一个输出目录，报告命令可能替换已有文件。
+下文的 `stressatlas` 命令在 Linux/macOS 中可替换为 `.venv/bin/python -m stressatlas`，
+在 Windows 中替换为 `.\.venv\Scripts\python.exe -m stressatlas`。
 
 保存的演示报告完整重放还要求固定版本及兼容的 Linux 数值构建。Windows 可在本机生成新报告，再完整验证该报告；仅固定版本不能保证跨平台随机驱动指纹相同。详见[数值重放边界](docs/METHODOLOGY.md#reproducibility-and-limitations)。
+
+[贡献与验证](CONTRIBUTING.md) ·
+[反馈可复现的问题](https://github.com/dev-belly/StressAtlas/issues/new?template=bug_report.md)
 
 ## 已实现的重点
 

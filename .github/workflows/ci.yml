@@ -27,12 +27,18 @@ jobs:
         run: |
           stressatlas verify --out demo
           stressatlas verify-precision --out demo/precision
-      - name: Generate and replay a fresh report
+      - name: Install a wheel and replay fresh reports outside the checkout
         run: |
-          stressatlas demo --out outputs
-          stressatlas verify --out outputs
-          stressatlas precision --inputs demo/inputs.json --resamples 200 --bootstrap-seed 7 --out outputs/precision
-          stressatlas verify-precision --out outputs/precision
+          python -m pip wheel --no-deps --wheel-dir "$RUNNER_TEMP/stressatlas-wheel" .
+          trial_dir="$RUNNER_TEMP/stressatlas-trial"
+          python -m venv "$trial_dir/.venv"
+          "$trial_dir/.venv/bin/python" -m pip install -r requirements-replay.txt "$RUNNER_TEMP"/stressatlas-wheel/stressatlas-*.whl
+          cd "$trial_dir"
+          .venv/bin/python -c "import stressatlas; print(stressatlas.__file__)"
+          .venv/bin/python -m stressatlas demo --out outputs
+          .venv/bin/python -m stressatlas verify --out outputs
+          .venv/bin/python -m stressatlas precision --inputs outputs/inputs.json --resamples 200 --bootstrap-seed 7 --out outputs/precision
+          .venv/bin/python -m stressatlas verify-precision --out outputs/precision
 
   windows:
     name: Windows Python 3.12
