@@ -46,6 +46,6 @@ Embedded CR, LF and CRLF are quoted as cell content; CSV records retain LF
 endings. Original labels remain in JSON. HTML selectors use explicit ASCII JSON
 identity keys, so repeated whitespace, CR/LF, NUL or Unicode names cannot become
 the same option through browser preprocessing. Visible labels remain readable.
-Regenerate older custom reports containing affected identifiers before using
-the updated verifier. Saved report HTML and its hash were refreshed; financial
+Regenerate earlier scenario and precision reports from their saved JSON
+inputs before using the updated verifier. Saved report HTML and its hash were refreshed; financial
 values and source inputs are unchanged.
