@@ -65,3 +65,12 @@ need a documented method/input reason and review.
 
 Synthetic results demonstrate the implementation, not real portfolio calibration
 or regulatory capital. Preserve that distinction when changing examples or claims.
+
+## Browser selector check
+
+The `Chrome report selectors` CI job uses the Ubuntu runner's installed Chrome
+and matching chromedriver to select CR/LF, NUL and Unicode identities in the
+actual report. `python scripts/check_browser.py` reproduces the check where
+Chrome and chromedriver are installed; `CHROMEWEBDRIVER` can name the driver's
+directory. No extra Python dependency is required. HTML-parser regressions
+remain part of the ordinary unit suite on every platform.
