@@ -33,4 +33,19 @@ The driver fingerprint describes the bank of normals plus its obligor/sector uni
 
 ## Spreadsheet-compatible exports
 
-Formula-shaped text fields and headers beginning with `=`, `+`, `-`, `@`, or control whitespace receive an apostrophe prefix in CSV exports. Numeric losses and negative numeric features keep their values. This affects the spreadsheet representation only: `inputs.json` retains original identifiers and is the authoritative source for replay. The verifier regenerates the same protected CSV representation.
+Formula-shaped text fields and headers beginning with ASCII or full-width
+`=`, `+`, `-`, `@` operators, including operators behind ASCII whitespace, and
+leading control/BOM prefixes receive a visible `text: ` marker in CSV exports.
+Text already starting with that marker receives one more marker, avoiding
+identity collisions. Numeric losses and negative numeric features keep their
+values. Original identifiers remain in `inputs.json`, the authoritative replay
+source. The visible marker avoids relying on apostrophes that spreadsheet
+editors can remove on save/reopen; see [OWASP guidance](https://owasp.org/www-community/attacks/CSV_Injection).
+
+Embedded CR, LF and CRLF are quoted as cell content; CSV records retain LF
+endings. Original labels remain in JSON. HTML selectors use explicit ASCII JSON
+identity keys, so repeated whitespace, CR/LF, NUL or Unicode names cannot become
+the same option through browser preprocessing. Visible labels remain readable.
+Regenerate older custom reports containing affected identifiers before using
+the updated verifier. Saved report HTML and its hash were refreshed; financial
+values and source inputs are unchanged.

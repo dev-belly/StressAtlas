@@ -9,7 +9,7 @@ import platform
 import numpy as np
 import scipy
 
-from .bundle import canonical, csv_text, decode, money, read_json
+from .bundle import canonical, csv_text, decode, html_identity, money, read_json
 from .core import Simulation, finite, identifier, make_drivers, simulate, tail_metrics
 
 FILES = ("inputs.json", "summary.json", "intervals.csv", "resamples.csv", "report.html")
@@ -98,10 +98,11 @@ def paired_bootstrap(simulations, alpha=0.99, resamples=300, seed=20261002, conf
 
 def render_precision(summary):
     label = "SYNTHETIC PORTFOLIO" if summary["data_kind"] == "synthetic" else "USER-SUPPLIED PORTFOLIO"
-    options = "".join(f'<option>{escape(name)}</option>' for name in summary["scenario_names"])
+    options = "".join(f'<option value="{html_identity(name)}">{escape(name)}</option>'
+                      for name in summary["scenario_names"])
     names = {"mean_loss": "Mean loss", "var": "VaR", "es": "ES"}
     def rows(comparison):
-        return "".join(f'<tr data-scenario="{escape(row["scenario"], quote=True)}">'
+        return "".join(f'<tr data-scenario="{html_identity(row["scenario"])}">'
             + f'<td>{escape(row["scenario"])}</td><td>{names[row["metric"]]}</td>'
             + "".join(f'<td>{row[key]:,.0f}</td>' for key in ("estimate", "lower", "upper", "bootstrap_se"))
             + "</tr>" for row in summary["intervals"] if row["comparison"] == comparison)

@@ -67,22 +67,31 @@ def decode(data):
 
 
 def spreadsheet_cell(value):
-    """Neutralize formula-shaped strings; leave numeric financial values untouched."""
+    """Mark untrusted formula-shaped text; leave numeric losses untouched."""
+    prefix = "text: "
     if isinstance(value, str) and (
-        value.startswith(("\t", "\r", "\n"))
-        or value.lstrip(" \t\r\n").startswith(("=", "+", "-", "@"))
+        value.startswith((prefix, "\t", "\r", "\n", "\x00", "\ufeff"))
+        or value.lstrip(" \t\r\n\v\f\x00\ufeff").startswith(("=", "+", "-", "@", "＝", "＋", "－", "＠"))
     ):
-        return "'" + value
+        return prefix + value
     return value
+
+
+def html_identity(value):
+    """An ASCII JSON selector key survives HTML whitespace/NUL preprocessing."""
+    return escape(json.dumps(value, ensure_ascii=True), quote=True)
 
 
 def csv_text(rows, fields):
     stream = io.StringIO(newline="")
-    writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
-    writer.writerow({field: spreadsheet_cell(field) for field in fields})
-    writer.writerows({field: spreadsheet_cell(value) for field, value in row.items()}
-                    for row in rows)
-    return stream.getvalue()
+    # Quote embedded CR and LF without changing the bundle's LF record endings.
+    writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\r\n")
+    def record(row):
+        stream.seek(0)
+        stream.truncate(0)
+        writer.writerow({field: spreadsheet_cell(value) for field, value in row.items()})
+        return stream.getvalue()[:-2] + "\n"
+    return record(dict(zip(fields, fields, strict=True))) + "".join(record(row) for row in rows)
 
 
 def concentration(loans, field):
@@ -124,7 +133,7 @@ def run(data):
 def render(summary):
     labels = "SYNTHETIC PORTFOLIO" if summary["data_kind"] == "synthetic" else "USER-SUPPLIED PORTFOLIO"
     rows = "".join("<tr>" + f"<td>{escape(r['scenario'])}</td>" + "".join(f"<td>{r[k]:,.0f}</td>" for k in ("analytic_el", "mean_loss", "mean_mc_se", "var", "es", "mean_delta", "paired_mc_se")) + "</tr>" for r in summary["scenarios"])
-    options = "".join(f'<option value="{escape(r["scenario"],quote=True)}">{escape(r["scenario"])}</option>' for r in summary["scenarios"])
+    options = "".join(f'<option value="{html_identity(r["scenario"])}">{escape(r["scenario"])}</option>' for r in summary["scenarios"])
     max_es = max(r["es"] for r in summary["scenarios"]) or 1
     bars = "".join(f'<div class="barrow"><span>{escape(r["scenario"])}</span><div class="track"><div class="bar" style="width:{r["es"]/max_es*100:.3f}%"></div></div><b>{r["es"]/1e6:.2f}m</b></div>' for r in summary["scenarios"])
     data = json.dumps(summary, sort_keys=True, ensure_ascii=False, allow_nan=False).replace("<", "\\u003c").replace("&", "\\u0026")
@@ -132,7 +141,7 @@ def render(summary):
     return f"""<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>StressAtlas · Portfolio loss scenarios</title><style>
 *{{box-sizing:border-box}}body{{margin:0;background:#0d1424;color:#edf2fa;font:16px/1.6 system-ui,sans-serif}}main{{max-width:1200px;margin:auto;padding:48px 24px}}h1{{font-size:clamp(32px,6vw,62px);line-height:1.1;margin:16px 0}}h2{{margin-top:44px}}p{{color:#a9b9d2}}.tag{{font-size:12px;letter-spacing:.14em;color:#f4b76a}}.cards{{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:32px 0}}.card{{background:#131f35;border:1px solid #2a3955;border-radius:14px;padding:22px}}.value{{display:block;font-size:36px;font-weight:700}}.scroll{{overflow-x:auto;border:1px solid #2a3955;border-radius:12px}}table{{width:100%;border-collapse:collapse;font-size:13px}}th,td{{padding:12px;border-bottom:1px solid #24334e;white-space:nowrap;text-align:right}}th:first-child,td:first-child{{text-align:left}}th{{background:#192842;color:#f4c892}}.barrow{{display:grid;grid-template-columns:150px 1fr 85px;gap:12px;align-items:center;margin:12px 0;font-size:13px}}.track{{background:#1b2c46;height:20px;border-radius:5px;overflow:hidden}}.bar{{height:100%;background:#f4b76a}}select{{font:inherit;background:#192842;color:#edf2fa;border:1px solid #475c7a;border-radius:6px;padding:8px}}#histogram{{width:100%;height:auto;min-height:180px}}code,a{{color:#f4c892}}footer{{margin-top:48px;color:#8da0bc}}@media(max-width:600px){{.barrow{{grid-template-columns:110px 1fr 65px}}}}
 </style><main><div class="tag">STRESSATLAS / {labels}</div><h1>When defaults cluster,<br>the tail changes.</h1><p>Credit portfolio stress testing with common random numbers, borrower-level defaults and additive expected-shortfall attribution.</p><p><a href="https://dev-belly.github.io/StressAtlas/precision/">Inspect VaR/ES sampling precision and paired intervals</a></p><div class="cards"><div class="card"><span class="value">{summary['loans']}</span>Loan positions / {summary['obligors']} obligors</div><div class="card"><span class="value">{summary['base_ead']/1e6:.1f}m</span>Base exposure / CNY</div><div class="card"><span class="value">{summary['config']['paths']:,}</span>Shared Monte Carlo paths</div><div class="card"><span class="value">{summary['config']['alpha']*100:g}%</span>VaR and ES level</div></div><h2>Scenario comparison</h2><p>All amounts in CNY. MC SE measures sampling error in the mean; it is not a confidence interval for VaR or ES. Paired deltas compare each scenario with {escape(summary['baseline_scenario'])} using the same driver bank.</p><div class="scroll"><table><thead><tr><th>Scenario</th><th>Analytic EL</th><th>Simulated mean</th><th>Mean MC SE</th><th>VaR</th><th>ES</th><th>Mean Δ</th><th>Paired SE</th></tr></thead><tbody>{rows}</tbody></table></div><h2>Tail loss at a glance</h2>{bars}<p>Compare scenarios that change correlation separately from scenarios that change marginal PD, LGD or EAD. Inspect the saved inputs for the assumptions behind each named scenario.</p><h2>Inspect loss distribution and sector attribution</h2><label>Scenario <select id="scenario">{options}</select></label><svg id="histogram" viewBox="0 0 1000 270" role="img" aria-label="Simulated loss histogram"></svg><p id="hist-note"></p><div class="scroll"><table><thead><tr><th>Sector</th><th>Contribution to portfolio ES / CNY</th><th>ES share</th></tr></thead><tbody id="sectors"></tbody></table></div><p>Sector contributions use the same portfolio-tail weights. They sum to portfolio ES. Tied boundary losses share their tail weight equally.</p><h2>Assumptions and replay</h2><p>One-period Gaussian factors, deterministic scenario LGD and EAD, fixed marginal PDs. No rating migration, dynamic recoveries or empirical macro calibration. This is a research prototype, not a regulatory capital calculation. {warnings}</p><p><code>stressatlas verify --out demo</code> validates artifact hashes and reruns all paths from saved inputs and seed. The CSV sample contains the first 200 paths, not the complete tail.</p><footer>Inspectable assumptions · {labels} · <a href="https://github.com/dev-belly/StressAtlas">Source and methodology</a></footer></main><script>
-const data={data};const select=document.getElementById('scenario');function show(){{const name=select.value,h=data.histograms[name],svg=document.getElementById('histogram');svg.replaceChildren();const ns='http://www.w3.org/2000/svg';const peak=Math.max(...h.counts,1);h.counts.forEach((c,i)=>{{const rect=document.createElementNS(ns,'rect');rect.setAttribute('x',20+i*24);rect.setAttribute('y',230-200*c/peak);rect.setAttribute('width',21);rect.setAttribute('height',200*c/peak);rect.setAttribute('fill','#f4b76a');const title=document.createElementNS(ns,'title');title.textContent=`${{h.edges[i].toFixed(0)}}–${{h.edges[i+1].toFixed(0)}} CNY: ${{c}} paths`;rect.append(title);svg.append(rect)}});const note=document.getElementById('hist-note');note.textContent=`Fixed loss bins: 0 to ${{(h.edges[h.edges.length-1]/1e6).toFixed(2)}}m CNY. Bars show path counts; hover for values.`;const body=document.getElementById('sectors');body.replaceChildren();data.sector_es.filter(r=>r.scenario===name).forEach(r=>{{const tr=document.createElement('tr');[r.sector,r.es_contribution.toLocaleString(undefined,{{maximumFractionDigits:0}}),(100*r.es_share).toFixed(1)+'%'].forEach(v=>{{const td=document.createElement('td');td.textContent=v;tr.append(td)}});body.append(tr)}})}}select.addEventListener('change',show);show();</script></html>\n"""
+const data={data};const select=document.getElementById('scenario');function show(){{const name=JSON.parse(select.value),h=data.histograms[name],svg=document.getElementById('histogram');svg.replaceChildren();const ns='http://www.w3.org/2000/svg';const peak=Math.max(...h.counts,1);h.counts.forEach((c,i)=>{{const rect=document.createElementNS(ns,'rect');rect.setAttribute('x',20+i*24);rect.setAttribute('y',230-200*c/peak);rect.setAttribute('width',21);rect.setAttribute('height',200*c/peak);rect.setAttribute('fill','#f4b76a');const title=document.createElementNS(ns,'title');title.textContent=`${{h.edges[i].toFixed(0)}}–${{h.edges[i+1].toFixed(0)}} CNY: ${{c}} paths`;rect.append(title);svg.append(rect)}});const note=document.getElementById('hist-note');note.textContent=`Fixed loss bins: 0 to ${{(h.edges[h.edges.length-1]/1e6).toFixed(2)}}m CNY. Bars show path counts; hover for values.`;const body=document.getElementById('sectors');body.replaceChildren();data.sector_es.filter(r=>r.scenario===name).forEach(r=>{{const tr=document.createElement('tr');[r.sector,r.es_contribution.toLocaleString(undefined,{{maximumFractionDigits:0}}),(100*r.es_share).toFixed(1)+'%'].forEach(v=>{{const td=document.createElement('td');td.textContent=v;tr.append(td)}});body.append(tr)}})}}select.addEventListener('change',show);show();</script></html>\n"""
 
 
 def artifacts(data):
