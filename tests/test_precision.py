@@ -211,8 +211,8 @@ class PrecisionBundleTests(unittest.TestCase):
         malicious = '=SUM(1)</script><script>alert("x")</script>'
         data["scenarios"][0]["name"] = malicious
         artifacts = precision_artifacts(data)
-        self.assertIn("'=SUM", artifacts["intervals.csv"])
-        self.assertIn("'=SUM", artifacts["resamples.csv"])
+        self.assertIn("text: =SUM", artifacts["intervals.csv"])
+        self.assertIn("text: =SUM", artifacts["resamples.csv"])
         self.assertNotIn('<script>alert("x")</script>', artifacts["report.html"])
         self.assertIn("&lt;/script&gt;", artifacts["report.html"])
 
