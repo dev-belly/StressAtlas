@@ -60,6 +60,30 @@ stressatlas run --inputs demo/inputs.json --out outputs-custom
 [Contributing and validation](CONTRIBUTING.md) ·
 [Report a reproducible problem](https://github.com/dev-belly/StressAtlas/issues/new?template=bug_report.md)
 
+## Use less driver memory
+
+Current source adds an optional streaming mode to all five commands:
+
+```bash
+stressatlas demo --paths 100000 --driver-mode stream --out outputs-stream
+stressatlas verify --driver-mode stream --out outputs-stream
+stressatlas precision --inputs outputs-stream/inputs.json --resamples 300 --driver-mode stream --out outputs-stream/precision
+stressatlas verify-precision --driver-mode stream --out outputs-stream/precision
+```
+
+It regenerates the same random streams in blocks for each scenario instead of
+retaining the full path-by-obligor driver bank. The default remains `memory`.
+On the same numerical build, both modes produce the same driver fingerprint,
+loss paths and report bytes; either can verify the other's reports. Streaming
+trades more random-number generation for less memory. Full loss/sector paths
+and bootstrap statistics still need memory.
+
+A fresh-process synthetic trial with 50,000 paths, 400 obligors and three scenarios
+reduced process peak RSS from **352.2 to 139.8 MiB**, with elapsed time increasing
+from **4.58 to 5.44 seconds**. These are local measurements, not a throughput
+guarantee. [Reproduce the comparison and read the limits](docs/METHODOLOGY.md#driver-memory-and-streaming).
+This option is in current source; the earlier v0.1.0 release predates it.
+
 ## Computed synthetic example
 
 **160 loans · 80 obligors · 4 sectors · CNY 169.6m base EAD · 20,000 shared paths.** All PD/LGD/EAD inputs are synthetic assumptions, not calibrated borrower estimates.
@@ -107,4 +131,6 @@ stressatlas verify-precision --out outputs/precision
 
 The model has one-period Gaussian factors with deterministic scenario LGD/EAD. It does not model rating migration, contagion networks, dynamic recovery, cash flows or macro calibration. It is not an implementation of Basel regulatory capital. Mean Monte Carlo SE is not a VaR/ES confidence interval.
 
-The random driver bank is held in memory (`O(paths × obligors)`); chunking bounds the latent-loss intermediates, not the whole simulation's memory. There is no claim of production-scale throughput. MIT license.
+The default driver bank is held in memory (`O(paths × obligors)`). Optional
+streaming removes that retained bank; it does not bound the whole report's
+memory or establish production-scale throughput. MIT license.

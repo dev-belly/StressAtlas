@@ -55,6 +55,12 @@ evidence on Linux, and generates fresh reports on Linux and Windows. Its Linux
 package check installs a wheel into a new environment and runs it outside the
 source checkout, including a fresh simulation and precision replay.
 
+Changes to drivers must also preserve fingerprints and complete report bytes
+between `--driver-mode memory` and `--driver-mode stream`. Run
+`python scripts/benchmark_driver_modes.py --paths 50000 --obligors 400 --sectors 4`
+after installing the package to compare fresh-process memory/time and all six
+scenario artifacts. Treat those measurements as environment-specific.
+
 Committed evidence needs `requirements-replay.txt` **and a compatible numerical
 build**. The verifier checks hashes and exact regenerated artifacts, including
 the driver fingerprint; version pins alone do not guarantee cross-platform

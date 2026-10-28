@@ -107,9 +107,9 @@ def money(value):
     return round(float(value), 6)
 
 
-def run(data):
+def run(data, *, driver_mode="memory"):
     loans, scenarios, config = decode(data)
-    bank = make_drivers(loans, config["paths"], config["seed"])
+    bank = make_drivers(loans, config["paths"], config["seed"], mode=driver_mode)
     results = [simulate(loans, s, bank, config["global_share"]) for s in scenarios]
     scenario_rows, sector_rows = [], []
     for simulation in results:
@@ -144,13 +144,13 @@ def render(summary):
 const data={data};const select=document.getElementById('scenario');function show(){{const name=JSON.parse(select.value),h=data.histograms[name],svg=document.getElementById('histogram');svg.replaceChildren();const ns='http://www.w3.org/2000/svg';const peak=Math.max(...h.counts,1);h.counts.forEach((c,i)=>{{const rect=document.createElementNS(ns,'rect');rect.setAttribute('x',20+i*24);rect.setAttribute('y',230-200*c/peak);rect.setAttribute('width',21);rect.setAttribute('height',200*c/peak);rect.setAttribute('fill','#f4b76a');const title=document.createElementNS(ns,'title');title.textContent=`${{h.edges[i].toFixed(0)}}–${{h.edges[i+1].toFixed(0)}} CNY: ${{c}} paths`;rect.append(title);svg.append(rect)}});const note=document.getElementById('hist-note');note.textContent=`Fixed loss bins: 0 to ${{(h.edges[h.edges.length-1]/1e6).toFixed(2)}}m CNY. Bars show path counts; hover for values.`;const body=document.getElementById('sectors');body.replaceChildren();data.sector_es.filter(r=>r.scenario===name).forEach(r=>{{const tr=document.createElement('tr');[r.sector,r.es_contribution.toLocaleString(undefined,{{maximumFractionDigits:0}}),(100*r.es_share).toFixed(1)+'%'].forEach(v=>{{const td=document.createElement('td');td.textContent=v;tr.append(td)}});body.append(tr)}})}}select.addEventListener('change',show);show();</script></html>\n"""
 
 
-def artifacts(data):
-    inputs, summary, samples = run(data)
+def artifacts(data, *, driver_mode="memory"):
+    inputs, summary, samples = run(data, driver_mode=driver_mode)
     return {"inputs.json": canonical(inputs), "summary.json": canonical(summary), "scenarios.csv": csv_text(summary["scenarios"], list(summary["scenarios"][0])), "sector_es.csv": csv_text(summary["sector_es"], list(summary["sector_es"][0])), "loss_sample.csv": csv_text(samples, list(samples[0])), "report.html": render(summary)}
 
 
-def write_bundle(data, out):
-    files = artifacts(data)
+def write_bundle(data, out, *, driver_mode="memory"):
+    files = artifacts(data, driver_mode=driver_mode)
     target = Path(out)
     target.mkdir(parents=True, exist_ok=True)
     for name, content in files.items():
@@ -160,7 +160,7 @@ def write_bundle(data, out):
     return read_json(target/"summary.json")
 
 
-def verify_bundle(out):
+def verify_bundle(out, *, driver_mode="memory"):
     target = Path(out)
     manifest = read_json(target/"manifest.json")
     if not isinstance(manifest, dict) or not isinstance(manifest.get("files"), dict) or manifest.get("schema_version") != 1 or manifest.get("engine") != "stressatlas/0.1.0" or set(manifest["files"]) != set(FILES):
@@ -168,7 +168,7 @@ def verify_bundle(out):
     for name in FILES:
         if sha256((target/name).read_bytes()).hexdigest() != manifest["files"][name]:
             raise ValueError(f"hash mismatch: {name}")
-    expected = artifacts(read_json(target/"inputs.json"))
+    expected = artifacts(read_json(target/"inputs.json"), driver_mode=driver_mode)
     for name, content in expected.items():
         if (target/name).read_bytes() != content.encode():
             raise ValueError(f"semantic replay mismatch: {name}; use requirements-replay.txt for the saved numerical stack")

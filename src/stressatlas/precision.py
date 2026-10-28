@@ -124,7 +124,7 @@ def render_precision(summary):
 <script>const select=document.getElementById('scenario');select.addEventListener('change',()=>document.querySelectorAll('tr[data-scenario]').forEach(row=>row.classList.toggle('hidden',select.value!==''&&row.dataset.scenario!==select.value)));</script></html>\n"""
 
 
-def precision_artifacts(data):
+def precision_artifacts(data, *, driver_mode="memory"):
     if not isinstance(data, dict):
         raise ValueError("precision inputs must be an object")
     source = dict(data)
@@ -133,7 +133,7 @@ def precision_artifacts(data):
         raise ValueError("precision settings contain unsupported fields")
     config = settings(**supplied)
     loans, scenarios, simulation_config = decode(source)
-    bank = make_drivers(loans, simulation_config["paths"], simulation_config["seed"])
+    bank = make_drivers(loans, simulation_config["paths"], simulation_config["seed"], mode=driver_mode)
     simulations = [simulate(loans, scenario, bank, simulation_config["global_share"]) for scenario in scenarios]
     summary, samples = paired_bootstrap(simulations, alpha=simulation_config["alpha"], **config)
     summary.update(schema_version=1, data_kind=source.get("data_kind", "user_supplied"),
@@ -145,8 +145,8 @@ def precision_artifacts(data):
         "resamples.csv": csv_text(samples, list(samples[0])), "report.html": render_precision(summary)}
 
 
-def write_precision_bundle(data, out):
-    artifacts = precision_artifacts(data)
+def write_precision_bundle(data, out, *, driver_mode="memory"):
+    artifacts = precision_artifacts(data, driver_mode=driver_mode)
     target = Path(out)
     target.mkdir(parents=True, exist_ok=True)
     for name, content in artifacts.items():
@@ -158,7 +158,7 @@ def write_precision_bundle(data, out):
     return read_json(target/"summary.json")
 
 
-def verify_precision_bundle(out):
+def verify_precision_bundle(out, *, driver_mode="memory"):
     target = Path(out)
     manifest = read_json(target/"manifest.json")
     if (not isinstance(manifest, dict) or manifest.get("schema_version") != 1 or manifest.get("engine") != ENGINE
@@ -167,7 +167,7 @@ def verify_precision_bundle(out):
     for name in FILES:
         if sha256((target/name).read_bytes()).hexdigest() != manifest["files"][name]:
             raise ValueError(f"hash mismatch: {name}")
-    for name, content in precision_artifacts(read_json(target/"inputs.json")).items():
+    for name, content in precision_artifacts(read_json(target/"inputs.json"), driver_mode=driver_mode).items():
         if (target/name).read_bytes() != content.encode():
             raise ValueError(f"precision semantic replay mismatch: {name}; use requirements-replay.txt")
     return {"verified": True, "files": len(FILES),
