@@ -20,7 +20,7 @@ Loan positions are grouped by obligor before multiplying the default indicator b
 
 Odds shocks use `PD' = PD*m / (1-PD+PD*m)`. Global and sector odds multipliers multiply; LGD shifts add and are clipped into `[0,1]`; EAD multipliers multiply; rho multipliers multiply and rho is capped at 1. PD endpoints remain endpoints. This is an assumed stress design, not empirical macro calibration.
 
-The first scenario is the comparison reference. A SeedSequence spawns three PCG64 streams, generating one immutable driver bank with sorted sector and obligor identities. Every scenario reuses that bank. Chunk sizes only change intermediate memory, not the random numbers.
+The first scenario is the comparison reference. A SeedSequence spawns three PCG64 streams with sorted sector and obligor identities. The default mode stores one immutable driver bank. Optional streaming regenerates those same streams for every scenario. Neither the execution mode nor chunk size changes the random draws on the checked numerical build.
 
 For pathwise difference `delta_k = loss_s,k - loss_reference,k`, report its mean and `std(delta, ddof=1)/sqrt(N)`. This is a Monte Carlo error estimate for the difference in means. Neither it nor the mean-loss SE estimates uncertainty in VaR/ES, credit parameters or model specification.
 
@@ -44,7 +44,76 @@ Reports record the full input portfolio/scenarios/config, random-driver SHA-256 
 
 The committed reports use a Linux driver fingerprint. On Windows with the same Python 3.12.14, NumPy 2.3.5 and SciPy 1.17.0 versions, the saved examples' numerical result tables match, but the regenerated driver fingerprint differs. Strict semantic verification therefore rejects those saved Linux reports on Windows. Windows CI checks their committed file hashes after checkout, then generates new reports and fully verifies both the scenario and precision bundles locally. Linux CI continues to replay the saved reports. The verifier retains exact byte comparisons on every platform; it never substitutes a tolerance for a fingerprint mismatch. `.gitattributes` preserves LF endings so Git's Windows checkout conversion does not alter evidence hashes.
 
-The bank stores all normal drivers; memory is `O(N*obligors)`. Chunking limits intermediate latent/default arrays, not stored drivers. No dynamic exposure, migration, recovery correlation, fat-tailed factors, contagion, parameter uncertainty or tail-confidence interval is modeled.
+Default memory mode stores all normal drivers; that bank costs
+`8 * N * (1 + sectors + obligors)` bytes, before intermediates and outputs.
+Streaming removes the retained bank as described below. No dynamic exposure,
+migration, recovery correlation, fat-tailed factors, contagion or parameter
+uncertainty is modeled. Bootstrap intervals only diagnose Monte Carlo sampling
+under the fixed model; they do not cover those omitted uncertainties.
+
+## Driver memory and streaming
+
+`--driver-mode memory|stream` is an execution option for `demo`, `run`, `verify`,
+`precision` and `verify-precision`. The Python equivalent is
+`make_drivers(loans, paths, seed, mode="stream")`; bundle functions accept
+`driver_mode="stream"`. It is not a new financial assumption or saved input
+field. Default `memory` remains compatible with earlier invocations.
+
+Streaming first hashes all three streams in the original array/row order using
+blocks of at most 4,096 paths, including bounded little-endian byte conversion.
+Each scenario then restarts the same seeded streams and generates its blocks.
+Sorted identities, shared borrower events and cross-scenario pairing remain
+unchanged. Tests compare the streamed bytes with independent full-array draws,
+every scenario's loss and sector paths, and all scenario/precision artifacts.
+The existing 20,000-path scenario bundle and 300-resample precision bundle
+replay exactly in either mode without rewriting their eleven evidence files.
+
+Driver/intermediate memory becomes `O(chunk * obligors)` instead of retaining
+`O(N * obligors)` drivers. The report still holds `O(N * sectors * scenarios)`
+loss arrays; bootstrap draws and stored resample statistics also consume memory.
+Streaming requires a fingerprint pass and generates normal draws again for each
+scenario. It can therefore be slower, especially with many scenarios. It is not
+an out-of-core tail estimator or a fixed-memory guarantee for the full workflow.
+Numerical-build and cross-platform replay limits above continue to apply.
+
+Reproduce the complete six-artifact comparison in separate fresh processes:
+
+```bash
+python scripts/benchmark_driver_modes.py --paths 50000 --obligors 400 --sectors 4
+```
+
+One local Linux run on 2026-10-28 used Python 3.12.14, NumPy 2.3.5 and SciPy
+1.17.0, one synthetic position per obligor and three scenarios:
+
+| Measurement | Memory | Stream |
+| --- | ---: | ---: |
+| Process peak RSS / MiB | 352.207 | 139.750 |
+| Peak traced Python/NumPy allocations / MiB | 307.172 | 82.922 |
+| Report generation / seconds | 4.5773 | 5.4441 |
+
+RSS includes imports and other process memory. Traced allocations are a
+different measure; they are not added to RSS. Elapsed time excludes startup
+and imports. Each worker emits runtime versions and a digest of the six
+ordered artifact names and contents. Both modes produced
+`bac4d84220128cf3e634e53ce7a33c5dceae087d714dcb62c385e0953b587288`.
+The script fails if these digests differ. No speed or capacity guarantee follows
+from one synthetic machine-specific trial.
+
+### One-row reduction correction
+
+The previous source could sum a one-row block differently from a larger block
+because NumPy chose a different reduction order. A 503-path severe demo at
+seed 7 had 90 differing total-loss entries between chunks of 1 and 4,096,
+with a maximum absolute difference of `7.450580596923828e-09` CNY. Accumulating
+obligor losses in fixed sorted order now makes these paths exactly equal,
+including a final block with one path. Both execution modes use this order.
+
+The committed reports keep their existing bytes. A prior custom report with a
+single-row final block (including path counts `4096*k + 1`) may retain the old
+rounding and fail strict replay. Preserve that evidence and use its original
+[source checkpoint](https://github.com/dev-belly/StressAtlas/commit/bc822179ac5e8f6663e62783c44d35c9e4666def)
+when investigating; generate any corrected comparison in a new directory.
+The verifier does not replace exact comparisons with a tolerance.
 
 ## Primary references
 

@@ -108,18 +108,63 @@ class Drivers:
     def paths(self):
         return self.global_z.size
 
+    def blocks(self, chunk_size):
+        for start in range(0, self.paths, chunk_size):
+            stop = min(start + chunk_size, self.paths)
+            yield start, self.global_z[start:stop], self.sector_z[start:stop], self.idio_z[start:stop]
 
-def make_drivers(loans, paths=20000, seed=20261001):
+
+def _streams(seed):
+    return [np.random.default_rng(s) for s in np.random.SeedSequence(seed).spawn(3)]
+
+
+def _normal_blocks(rng, paths, columns=None, chunk_size=4096):
+    for start in range(0, paths, chunk_size):
+        rows = min(chunk_size, paths - start)
+        yield rng.standard_normal(rows if columns is None else (rows, columns))
+
+
+@dataclass(frozen=True)
+class StreamingDrivers:
+    """Regenerate the same three streams per scenario without storing the bank."""
+
+    obligors: tuple[str, ...]
+    sectors: tuple[str, ...]
+    seed: int
+    paths: int
+    fingerprint: str
+
+    def blocks(self, chunk_size):
+        streams = _streams(self.seed)
+        blocks = (
+            _normal_blocks(streams[0], self.paths, chunk_size=chunk_size),
+            _normal_blocks(streams[1], self.paths, len(self.sectors), chunk_size),
+            _normal_blocks(streams[2], self.paths, len(self.obligors), chunk_size),
+        )
+        for index, (global_z, sector_z, idio_z) in enumerate(zip(*blocks, strict=True)):
+            yield index * chunk_size, global_z, sector_z, idio_z
+
+
+def make_drivers(loans, paths=20000, seed=20261001, *, mode="memory"):
     loans = validate_portfolio(loans)
     if type(paths) is not int or paths < 2 or type(seed) is not int or not 0 <= seed < 2**32:
         raise ValueError("paths must be an integer >=2; seed must be a uint32 integer")
+    if mode not in ("memory", "stream"):
+        raise ValueError("driver mode must be memory or stream")
     obligors = tuple(sorted({l.obligor_id for l in loans}))
     sectors = tuple(sorted({l.sector for l in loans}))
-    streams = [np.random.default_rng(s) for s in np.random.SeedSequence(seed).spawn(3)]
+    streams = _streams(seed)
+    digest = sha256(repr((obligors, sectors, paths, seed, "PCG64")).encode())
+    if mode == "stream":
+        # Hash the original array order in bounded blocks, including little-endian
+        # byte conversion. No scenario-sized driver matrix is retained.
+        for rng, columns in zip(streams, (None, len(sectors), len(obligors)), strict=True):
+            for block in _normal_blocks(rng, paths, columns):
+                digest.update(block.astype("<f8", copy=False).tobytes())
+        return StreamingDrivers(obligors, sectors, seed, paths, digest.hexdigest())
     global_z = streams[0].standard_normal(paths)
     sector_z = streams[1].standard_normal((paths, len(sectors)))
     idio_z = streams[2].standard_normal((paths, len(obligors)))
-    digest = sha256(repr((obligors, sectors, paths, seed, "PCG64")).encode())
     for array in (global_z, sector_z, idio_z):
         digest.update(array.astype("<f8", copy=False).tobytes())
         array.setflags(write=False)
@@ -151,7 +196,7 @@ class Simulation:
 
 def simulate(loans, scenario, drivers, global_share=0.5, chunk_size=4096):
     loans = validate_portfolio(loans)
-    if not isinstance(scenario, Scenario) or not isinstance(drivers, Drivers):
+    if not isinstance(scenario, Scenario) or not isinstance(drivers, (Drivers, StreamingDrivers)):
         raise ValueError("expected Scenario and Drivers")
     finite(global_share, "global_share", upper=1)
     if type(chunk_size) is not int or chunk_size < 1:
@@ -179,16 +224,20 @@ def simulate(loans, scenario, drivers, global_share=0.5, chunk_size=4096):
     losses = np.zeros(drivers.paths)
     sector_losses = np.zeros((drivers.paths, len(sectors)))
     default_counts = np.zeros(len(positions), dtype=np.int64)
-    # Drivers were generated once. Chunking only bounds intermediate memory.
-    for start in range(0, drivers.paths, chunk_size):
-        stop = min(start + chunk_size, drivers.paths)
-        common = math.sqrt(global_share) * drivers.global_z[start:stop, None] + math.sqrt(1 - global_share) * drivers.sector_z[start:stop, sector_idx]
-        latent = common * np.sqrt(correlation) + drivers.idio_z[start:stop] * np.sqrt(1 - correlation)
+    for start, global_z, sector_z, idio_z in drivers.blocks(chunk_size):
+        stop = start + global_z.size
+        common = math.sqrt(global_share) * global_z[:, None] + math.sqrt(1 - global_share) * sector_z[:, sector_idx]
+        latent = common * np.sqrt(correlation) + idio_z * np.sqrt(1 - correlation)
         defaults = latent < threshold
         default_counts += defaults.sum(axis=0)
-        loan_losses = defaults * amount
         for name, index in sectors.items():
-            sector_losses[start:stop, index] = loan_losses[:, sector_idx == index].sum(axis=1)
+            # A one-row NumPy reduction can use a different summation order
+            # from a multi-row block. Keep sorted-obligor accumulation fixed,
+            # including the last block when it contains exactly one path.
+            total = np.zeros(stop - start)
+            for borrower in np.flatnonzero(sector_idx == index):
+                total += defaults[:, borrower] * amount[borrower]
+            sector_losses[start:stop, index] = total
         losses[start:stop] = sector_losses[start:stop].sum(axis=1)
     losses.setflags(write=False)
     sector_losses.setflags(write=False)

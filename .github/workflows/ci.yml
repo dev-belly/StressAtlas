@@ -27,6 +27,8 @@ jobs:
         run: |
           stressatlas verify --out demo
           stressatlas verify-precision --out demo/precision
+          stressatlas verify --out demo --driver-mode stream
+          stressatlas verify-precision --out demo/precision --driver-mode stream
       - name: Install a wheel and replay fresh reports outside the checkout
         run: |
           python -m pip wheel --no-deps --wheel-dir "$RUNNER_TEMP/stressatlas-wheel" .
@@ -39,6 +41,23 @@ jobs:
           .venv/bin/python -m stressatlas verify --out outputs
           .venv/bin/python -m stressatlas precision --inputs outputs/inputs.json --resamples 200 --bootstrap-seed 7 --out outputs/precision
           .venv/bin/python -m stressatlas verify-precision --out outputs/precision
+          .venv/bin/python -m stressatlas demo --driver-mode stream --out outputs-stream
+          .venv/bin/python -m stressatlas verify --out outputs-stream
+          .venv/bin/python -m stressatlas verify --driver-mode stream --out outputs
+          .venv/bin/python -m stressatlas precision --inputs outputs/inputs.json --resamples 200 --bootstrap-seed 7 --driver-mode stream --out outputs-stream/precision
+          .venv/bin/python -m stressatlas verify-precision --driver-mode stream --out outputs/precision
+          .venv/bin/python -m stressatlas verify-precision --out outputs-stream/precision
+          .venv/bin/python - <<'PY'
+          from pathlib import Path
+          for suffix in ('', 'precision'):
+              memory = Path('outputs') / suffix
+              stream = Path('outputs-stream') / suffix
+              assert {p.name: p.read_bytes() for p in memory.iterdir() if p.is_file()} == {
+                  p.name: p.read_bytes() for p in stream.iterdir() if p.is_file()
+              }, suffix
+          print('Installed wheel: all scenario and precision artifacts are byte-identical')
+          PY
+          .venv/bin/python "$GITHUB_WORKSPACE/scripts/benchmark_driver_modes.py" --paths 2051 --obligors 40 --sectors 4
 
   windows:
     name: Windows Python 3.12
@@ -81,13 +100,13 @@ jobs:
           '@ | python -
       - name: Generate and replay fresh reports
         run: |
-          stressatlas demo --paths 2000 --seed 42 --out outputs
+          stressatlas demo --paths 2000 --seed 42 --driver-mode stream --out outputs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           stressatlas verify --out outputs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           stressatlas precision --inputs outputs/inputs.json --resamples 20 --bootstrap-seed 7 --out outputs/precision
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          stressatlas verify-precision --out outputs/precision
+          stressatlas verify-precision --driver-mode stream --out outputs/precision
 
   browser:
     name: Chrome report selectors

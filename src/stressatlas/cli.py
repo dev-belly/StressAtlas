@@ -13,6 +13,8 @@ def main(argv=None):
     for command in ("demo", "run", "verify", "precision", "verify-precision"):
         p = sub.add_parser(command)
         p.add_argument("--out", default="outputs/precision" if command in ("precision", "verify-precision") else "outputs")
+        p.add_argument("--driver-mode", choices=("memory", "stream"), default="memory",
+                       help="stream regenerates shared drivers in blocks, trading CPU for less memory")
         if command == "run":
             p.add_argument("--inputs", required=True)
         elif command == "demo":
@@ -26,16 +28,16 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         if args.command == "verify-precision":
-            result = verify_precision_bundle(args.out)
+            result = verify_precision_bundle(args.out, driver_mode=args.driver_mode)
         elif args.command == "precision":
             data = read_json(args.inputs)
             if not isinstance(data, dict):
                 raise ValueError("precision inputs must be an object")
             data = {**data, "precision": dict(resamples=args.resamples, seed=args.bootstrap_seed,
                 confidence_level=args.confidence_level)}
-            result = write_precision_bundle(data, args.out)
+            result = write_precision_bundle(data, args.out, driver_mode=args.driver_mode)
         else:
-            result = verify_bundle(args.out) if args.command == "verify" else write_bundle(demo_inputs(args.paths,args.seed) if args.command == "demo" else read_json(args.inputs), args.out)
+            result = verify_bundle(args.out, driver_mode=args.driver_mode) if args.command == "verify" else write_bundle(demo_inputs(args.paths,args.seed) if args.command == "demo" else read_json(args.inputs), args.out, driver_mode=args.driver_mode)
     except (ValueError, OSError, KeyError) as exc:
         print(f"stressatlas: {exc}", file=sys.stderr)
         return 2
