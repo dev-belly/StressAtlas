@@ -13,6 +13,11 @@ environment, optional API, source ledger and [Chinese research brief](labs/curve
 Its hypothetical bond positions and observed fitted curves are separate from
 the synthetic credit-portfolio cases below.
 
+**From risk diagnosis to constrained action:** [CurveShift's hedge laboratory](https://dev-belly.github.io/StressAtlas/curveshift/hedge/)
+uses sparse CVaR / HiGHS to size hedges under face limits and entry costs.
+Fit on 504 pre-2025 changes; evaluate fixed positions on 249 held-out 2025 changes.
+[Method, results and reproduction](labs/curveshift/docs/HEDGING.zh-CN.md).
+
 [![CI](https://github.com/dev-belly/StressAtlas/actions/workflows/ci.yml/badge.svg)](https://github.com/dev-belly/StressAtlas/actions/workflows/ci.yml)
 [Open the online report](https://dev-belly.github.io/StressAtlas/) · [中文说明](README.zh-CN.md) · [Model and tail math](docs/METHODOLOGY.md) · [Data contract](docs/DATA_CONTRACT.md) · [Case study](docs/CASE_STUDY.md) · [Interview notes](docs/INTERVIEW.md)
 

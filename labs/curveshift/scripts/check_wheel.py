@@ -20,4 +20,6 @@ with tempfile.TemporaryDirectory() as directory:
     subprocess.run([str(python), "-c", "import curveshift; print(curveshift.__file__)"], check=True, cwd=target)
     subprocess.run([str(python), "-m", "curveshift.cli", "report", "--out", "report"], check=True, cwd=target)
     subprocess.run([str(python), "-m", "curveshift.cli", "verify", "report"], check=True, cwd=target)
+    subprocess.run([str(python), "-m", "curveshift.cli", "hedge-report", "--out", "hedge"], check=True, cwd=target)
+    subprocess.run([str(python), "-m", "curveshift.cli", "hedge-verify", "hedge"], check=True, cwd=target)
 print("Noneditable CurveShift wheel replayed outside the checkout")

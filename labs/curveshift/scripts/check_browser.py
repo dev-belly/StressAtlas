@@ -14,6 +14,7 @@ from pathlib import Path
 
 from curveshift.cli import evaluate_scenario
 from curveshift.engine import build_book, quantlib_price
+from curveshift.hedge import FIT_DATE, HEDGES, TARGET
 from curveshift.market import load_market, select_curve
 
 
@@ -186,6 +187,65 @@ def main():
                 assert_price([0] * 4)
                 if execute("return document.getElementById('hash-status').textContent;"):
                     raise AssertionError("A valid scenario retained an invalid-link notice")
+            hedge_report = source_report.parent / "hedge"
+            hedge = json.loads((hedge_report / "hedge.json").read_bytes())
+            _, hedge_curve = select_curve(frame, FIT_DATE)
+            hedge_book = build_book(FIT_DATE, TARGET + HEDGES)
+
+            def assert_hedge(case, shock):
+                nonlocal checks
+                deltas = [
+                    quantlib_price(b, FIT_DATE, hedge_curve, shock) - quantlib_price(b, FIT_DATE, hedge_curve)
+                    for b in hedge_book
+                ]
+                expected = deltas[0] + sum(
+                    p / 1e6 * delta for p, delta in zip(case["positions_face_usd"], deltas[1:], strict=True)
+                )
+                actual = float(execute("return document.getElementById('stress-after').dataset.value;"))
+                es = float(execute("return document.getElementById('after-es').dataset.value;"))
+                if abs(actual - expected) > 1e-5 or abs(es - case["evaluation_risk"]["es_usd"]) > 1e-6:
+                    raise AssertionError(("Hedge browser result differs from QuantLib", actual, expected, es))
+                if execute("return document.documentElement.scrollWidth > document.documentElement.clientWidth+1;"):
+                    raise AssertionError("Hedge page overflows its viewport")
+                checks += 1
+
+            for width in (1280, 390):
+                call("POST", f"/session/{session}/window/rect", {"width": width, "height": 1000})
+                url = (hedge_report / "index.html").as_uri()
+                navigate(url)
+                screenshot(f"hedge-{width}-overview.png")
+                for case in hedge["cases"]:
+                    click(f'[data-budget="{case["budget_usd"]}"]')
+                    assert_hedge(case, [-25, 0, 25, 0])
+                click('[data-budget="6000000"]')
+                for selector, shock in [("#parallel", [50] * 4), ("#reset", [0] * 4), ("#twist", [-25, 0, 25, 0])]:
+                    click(selector)
+                    assert_hedge(hedge["cases"][3], shock)
+                trades = download("curveshift-hedge-6000000.csv", "#download-plan")
+                import csv
+                import io
+
+                positions = [float(r["signed_face_usd"]) for r in csv.DictReader(io.StringIO(trades.decode()))]
+                if any(
+                    abs(a - b) > 1e-5 for a, b in zip(positions, hedge["cases"][3]["positions_face_usd"], strict=True)
+                ):
+                    raise AssertionError("Downloaded trades differ from the selected hedge")
+                for exported, original in [
+                    ("hedge.json", "hedge.json"),
+                    ("frontier.csv", "frontier.csv"),
+                    ("heldout-losses.csv", "heldout_losses.csv"),
+                ]:
+                    filename = "curveshift-" + exported
+                    download(filename, f'a[download="{filename}"]', (hedge_report / original).read_bytes())
+                navigate(url + "#budget=4000000&shock=50,50,50,50")
+                assert_hedge(hedge["cases"][2], [50] * 4)
+                navigate(url + "#budget=bad&shock=NaN,0,0,0")
+                assert_hedge(hedge["cases"][3], [-25, 0, 25, 0])
+                if not execute("return document.getElementById('state-status').textContent.includes('invalid');"):
+                    raise AssertionError("Invalid hedge link has no notice")
+                click("#reset")
+                if execute("return document.getElementById('state-status').textContent;"):
+                    raise AssertionError("A valid hedge retained an invalid-link notice")
             print(
                 json.dumps(
                     {

@@ -38,6 +38,8 @@ jobs:
         run: uv run --project labs/curveshift --locked pytest labs/curveshift/tests -q
       - name: Replay the complete saved research
         run: uv run --project labs/curveshift --locked curveshift verify labs/curveshift/reports/demo
+      - name: Replay the constrained hedge and sealed-year evaluation
+        run: uv run --project labs/curveshift --locked curveshift hedge-verify labs/curveshift/reports/hedge
       - name: Installed wheel outside the checkout
         run: uv run --project labs/curveshift --locked python labs/curveshift/scripts/check_wheel.py
   browser:

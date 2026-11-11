@@ -10,6 +10,13 @@ and compare full revaluation with a linear DV01 approximation.
 [中文研究简报](docs/RESEARCH.zh-CN.md) · [Method](docs/METHOD.md) ·
 [Sources and upstream credit](ATTRIBUTION.md)
 
+**New: [Give the hedge a budget](https://dev-belly.github.io/StressAtlas/curveshift/hedge/)** —
+sparse CVaR optimization with SciPy/HiGHS, gross and per-maturity face caps,
+entry costs and a sealed-year evaluation. A $6m gross hedge-face budget reduces
+2025 scenario ES from **$71,789.20 to $29,039.70** before a **$1,200** entry cost.
+The target is a fixed hypothetical $10m 7Y bond; this is a scenario study,
+not realized trading performance. [中文推导、复现与面试说明](docs/HEDGING.zh-CN.md).
+
 ## One result worth explaining
 
 At the frozen **2025-12-31** valuation date, a hypothetical USD 2.5m-face long
@@ -30,6 +37,7 @@ linear approximation as an exact answer.
 | QuantLib 1.44 | Semiannual cash-flow schedules and a separate discounting-bond pricing engine. |
 | Nelson–Siegel–Svensson 0.5.0 | luphord's credited MIT implementation evaluates the fitted zero curves. |
 | NumPy / SciPy | Full cash-flow revaluation, analytical key-rate sensitivities and cross-key gamma. |
+| SciPy sparse / HiGHS | A 513-variable, 509-constraint CVaR linear program; gross and per-bond caps, costs, feasibility and primal–dual checks. |
 | scikit-learn | PCA fitted on 2016–2024 yield changes, evaluated on 2025 changes. |
 | Polars | Typed, date-filtered loading of the frozen curve snapshot. |
 | FastAPI / Pydantic | Optional read-only pricing API with finite numeric inputs and source-bound scenarios. |
@@ -100,6 +108,25 @@ uvicorn curveshift.api:app --host 127.0.0.1 --port 8001
 Open `http://127.0.0.1:8001/docs`, inspect `GET /health`, then send
 `{"shock_bp": [-25, 0, 25, 0]}` to `POST /scenario`. The endpoint uses the same
 source and pricing code, with no orders, brokerage connection or live quotes.
+
+## Constrained hedge laboratory
+
+The $10m-face 7Y target remains fixed. Signed 2Y/5Y/10Y/30Y hedge positions
+are optimized using 504 changes through 2024-12-31, capped at $3m face per
+maturity. Pricing and cash flows are frozen at that date. The 249 subsequent
+2025 changes evaluate the fixed hedge; they never enter its objective.
+
+```bash
+curveshift hedge --budget-usd 6000000 --cost-bp 2
+curveshift hedge-report --out output/hedge
+curveshift hedge-verify output/hedge
+```
+
+The standalone HTML compares five independently solved budgets, residual key
+DV01, custom stresses and downloaded trades. `POST /hedge` accepts
+`{"budget_usd": 6000000, "cost_bp": 2}` and optionally the source SHA-256.
+The API can solve other budgets up to $10m face. Costs are an illustrative
+one-time face-based charge; financing, collateral and borrow costs are excluded.
 
 ## Attribution and scope
 
