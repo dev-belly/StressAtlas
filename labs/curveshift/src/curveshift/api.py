@@ -7,6 +7,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .cli import evaluate_scenario
+from .hedge import hedge_study
 from .market import load_market
 
 app = FastAPI(
@@ -59,5 +60,23 @@ def reprice(request: ScenarioRequest):
     }
     try:
         return evaluate_scenario(inputs)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+
+
+class HedgeRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True, allow_inf_nan=False)
+    budget_usd: float = Field(default=6_000_000, ge=0, le=10_000_000)
+    cost_bp: float = Field(default=2.0, ge=0, le=50)
+    source_sha256: str | None = None
+
+
+@app.post("/hedge")
+def optimize_hedge(request: HedgeRequest):
+    _, source = load_market()
+    if request.source_sha256 is not None and request.source_sha256 != source["subset_sha256"]:
+        raise HTTPException(422, "Hedge source does not match the bundled market snapshot")
+    try:
+        return hedge_study((request.budget_usd,), request.cost_bp)
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc

@@ -6,6 +6,8 @@ import sys
 from pathlib import Path
 
 from .engine import build_book, scenario, validate_shock
+from .hedge import hedge_study
+from .hedge_report import verify_hedge_report, write_hedge_report
 from .market import load_market, select_curve
 from .report import json_bytes, verify_report, write_report
 
@@ -39,12 +41,25 @@ def main(argv=None):
     replay.add_argument("--out", required=True)
     check = commands.add_parser("verify", help="Verify file hashes, source and full numerical replay")
     check.add_argument("directory")
+    hedge = commands.add_parser("hedge", help="Fit a constrained CVaR hedge using only pre-2025 curve changes")
+    hedge.add_argument("--budget-usd", type=float, default=6_000_000)
+    hedge.add_argument("--cost-bp", type=float, default=2.0)
+    hedge_report = commands.add_parser("hedge-report", help="Build the independent hedge laboratory")
+    hedge_report.add_argument("--out", required=True)
+    hedge_check = commands.add_parser("hedge-verify", help="Replay the saved hedge optimization and evaluation")
+    hedge_check.add_argument("directory")
     args = parser.parse_args(argv)
     try:
         if args.command == "report":
             result = write_report(args.out, args.as_of)
         elif args.command == "verify":
             result = verify_report(args.directory)
+        elif args.command == "hedge":
+            result = hedge_study((args.budget_usd,), args.cost_bp)
+        elif args.command == "hedge-report":
+            result = write_hedge_report(args.out)
+        elif args.command == "hedge-verify":
+            result = verify_hedge_report(args.directory)
         else:
             destination = Path(args.out)
             if destination.exists() or destination.is_symlink():
