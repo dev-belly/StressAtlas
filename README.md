@@ -4,6 +4,15 @@
 
 **Credit portfolio stress tests that distinguish marginal risk from clustered defaults.**
 
+**New standalone project: [CurveShift](labs/curveshift)** —
+[open the interest-rate laboratory](https://dev-belly.github.io/StressAtlas/curveshift/).
+Use 2,499 historical curve estimates, QuantLib revaluation, key-rate DV01,
+historical tail risk and chronological PCA to explore why a parallel-DV01-neutral
+pair can still lose under a curve twist. It has its own package, locked
+environment, optional API, source ledger and [Chinese research brief](labs/curveshift/docs/RESEARCH.zh-CN.md).
+Its hypothetical bond positions and observed fitted curves are separate from
+the synthetic credit-portfolio cases below.
+
 [![CI](https://github.com/dev-belly/StressAtlas/actions/workflows/ci.yml/badge.svg)](https://github.com/dev-belly/StressAtlas/actions/workflows/ci.yml)
 [Open the online report](https://dev-belly.github.io/StressAtlas/) · [中文说明](README.zh-CN.md) · [Model and tail math](docs/METHODOLOGY.md) · [Data contract](docs/DATA_CONTRACT.md) · [Case study](docs/CASE_STUDY.md) · [Interview notes](docs/INTERVIEW.md)
 

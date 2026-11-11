@@ -29,6 +29,13 @@ jobs:
           cp demo/report.html _site/index.html
           cp demo/precision/report.html _site/precision/index.html
           touch _site/.nojekyll
+      - name: Verify the independent CurveShift laboratory
+        run: |
+          python -m pip install uv==0.13.6
+          uv sync --project labs/curveshift --locked
+          uv run --project labs/curveshift --locked curveshift verify labs/curveshift/reports/demo
+          mkdir _site/curveshift
+          cp -R labs/curveshift/reports/demo/. _site/curveshift/
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:

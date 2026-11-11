@@ -5,3 +5,6 @@ __pycache__/
 build/
 dist/
 outputs*/
+.venv-curve/
+.venv_core/
+browser-artifacts/

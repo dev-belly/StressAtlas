@@ -74,6 +74,13 @@ or regulatory capital. Preserve that distinction when changing examples or claim
 
 ## Browser selector check
 
+The independent [CurveShift application](labs/curveshift) has its own locked
+environment and workflow. Use `uv sync --project labs/curveshift --locked --extra dev --extra api`,
+then its README commands. Its frozen public staff-estimated curves retain their
+primary attribution and actual mirror provenance; its bond positions are hypothetical.
+Keep those boundaries distinct from the root package's synthetic credit fixtures.
+
+
 The `Chrome report selectors` CI job uses the Ubuntu runner's installed Chrome
 and matching chromedriver to select CR/LF, NUL and Unicode identities in the
 actual report. `python scripts/check_browser.py` reproduces the check where
