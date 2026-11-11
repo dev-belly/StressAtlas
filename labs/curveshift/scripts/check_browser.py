@@ -103,8 +103,16 @@ def main():
                 actual = float(execute("return document.getElementById('full-pnl').dataset.value;"))
                 if abs(actual - expected) > 1e-5:
                     raise AssertionError((shock, actual, expected))
-                if not execute("return document.documentElement.scrollWidth <= innerWidth+1;"):
-                    raise AssertionError("Report overflows viewport")
+                overflow = execute("""
+                    const limit=document.documentElement.clientWidth;
+                    if(document.documentElement.scrollWidth<=limit+1)return null;
+                    return {client:limit,scroll:document.documentElement.scrollWidth,offenders:[...document.querySelectorAll('body *')]
+                        .filter(n=>n.getBoundingClientRect().right>limit+1 && !n.closest('.table-wrap'))
+                        .map(n=>({tag:n.tagName,id:n.id,right:n.getBoundingClientRect().right,text:n.textContent.slice(0,80)}))
+                        .slice(0,12)};
+                """)
+                if overflow:
+                    raise AssertionError(("Report overflows its visible viewport", overflow))
                 checks += 1
 
             def download(filename, selector, expected=None):
@@ -127,6 +135,9 @@ def main():
 
             for width in (1280, 390):
                 call("POST", f"/session/{session}/window/rect", {"width": width, "height": 1000})
+                actual_width = execute("return innerWidth;")
+                if actual_width != width:
+                    raise AssertionError(("Requested viewport differs from actual viewport", width, actual_width))
                 url = (source_report / "index.html").as_uri()
                 navigate(url)
                 assert_price([50] * 4)
