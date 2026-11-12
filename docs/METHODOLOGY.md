@@ -4,10 +4,12 @@
 
 For obligor `i` in sector `s`, the latent asset variable is:
 
-```text
-A_i = sqrt(rho_i) [sqrt(g) Z_global + sqrt(1-g) Z_sector_s]
-      + sqrt(1-rho_i) epsilon_i
-default_i = (A_i < Phi_inverse(PD_i))
+```math
+\begin{aligned}
+A_i &= \sqrt{\rho_i}\left[\sqrt{g}\,Z_{\mathrm{global}} + \sqrt{1-g}\,Z_{\mathrm{sector},s}\right]
+       + \sqrt{1-\rho_i}\,\epsilon_i, \\
+\operatorname{default}_i &= \mathbf{1}\!\left\{A_i < \Phi^{-1}(\operatorname{PD}_i)\right\}.
+\end{aligned}
 ```
 
 All drivers are independent standard normals before being combined. `g` is the global share of the systematic component; it is not the total asset correlation. The latent variable has unit variance, so each obligor's marginal default probability is its scenario PD. Rho describes an asset-factor loading parameter, not default-indicator correlation.
