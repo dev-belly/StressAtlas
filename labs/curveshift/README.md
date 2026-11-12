@@ -15,7 +15,7 @@ sparse CVaR optimization with SciPy/HiGHS, gross and per-maturity face caps,
 entry costs and a sealed-year evaluation. A $6m gross hedge-face budget reduces
 2025 scenario ES from **$71,789.20 to $29,039.70** before a **$1,200** entry cost.
 The target is a fixed hypothetical $10m 7Y bond; this is a scenario study,
-not realized trading performance. [中文推导、复现与面试说明](docs/HEDGING.zh-CN.md).
+not realized trading performance. [中文方法推导与复现](docs/HEDGING.zh-CN.md).
 
 ## One result worth explaining
 

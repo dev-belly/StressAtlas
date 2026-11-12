@@ -74,13 +74,3 @@ Resampling cannot invent tail events absent from the sample. Fewer than
 are flagged. Zero spread does not validate assumptions. More paths,
 independent simulation seeds and model-sensitivity studies remain separate
 checks; formal coverage validation is not claimed.
-
-## 面试追问
-
-**为什么均值标准误不能解释 ES 精度？** 均值和尾部统计量的抽样行为不同，这里每次都重新计算 VaR 和 ES。
-
-**为什么所有情景共用重采样下标？** 分别抽样会破坏原本的路径配对，情景差异中的共同噪声无法正确保留。
-
-**为什么不按贷款抽样？** 一条路径内的贷款损失共享借款人、行业和全局冲击，按贷款抽样会改变相关结构。
-
-**95% 区间是未来损失的概率区间吗？** 不是。风险层面的 99% VaR，与固定模型下估计精度的 95% 近似区间，是两个不同概念。
