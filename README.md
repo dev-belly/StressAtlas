@@ -25,6 +25,15 @@ Scenario assumptions are explicit. All scenarios reuse the same global, sector a
 
 ![Computed portfolio risk and sector contribution figures](docs/evidence.png)
 
+## Tail risk workbench
+
+Compare ES, VaR and expected loss, then inspect which sectors contribute to the selected scenario's tail.
+
+[Workbench files](demo/workbench/) · [Open the online workbench](https://dev-belly.github.io/StressAtlas/workbench/)
+
+Open `demo/workbench/index.html` from a checkout to filter, drill into a record, and export CSV or JSON offline.
+Run `python demo/workbench/build_data.py --check` to verify the browser snapshot.
+
 ## Run in one minute
 
 Python 3.11+ and Git are required. Both paths use a virtual environment directly,
