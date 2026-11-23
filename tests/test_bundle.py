@@ -2,8 +2,10 @@ import contextlib
 from hashlib import sha256
 import io
 from pathlib import Path
+import runpy
 from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
 
 from stressatlas.bundle import canonical, read_json, verify_bundle, write_bundle
 from stressatlas.cli import main
@@ -11,6 +13,23 @@ from stressatlas.demo import demo_inputs
 
 
 class BundleTests(unittest.TestCase):
+    def test_workbench_renders_zero_base_es_without_a_multiplier(self):
+        script = Path(__file__).resolve().parents[1] / "demo/workbench/build_data.py"
+        builder = runpy.run_path(str(script))["build"]
+        read_evidence = builder.__globals__["read_json"]
+
+        def zero_base_es(path):
+            result = read_evidence(path)
+            independent = next(row for row in result["scenarios"] if row["scenario"] == "independent")
+            independent["es"] = 0
+            return result
+
+        with patch.dict(builder.__globals__, read_json=zero_base_es):
+            workbench = builder()
+        self.assertEqual(workbench["hero"]["value"], "—")
+        independent = next(row for row in workbench["records"] if row["id"] == "independent")
+        self.assertEqual(independent["values"]["es"], 0)
+
     def test_cli_preserves_pd_endpoints_with_underflowed_odds(self):
         data={"portfolio":[
             dict(loan_id="L0",obligor_id="B0",sector="retail",ead=1000,pd=0,lgd=.5,rho=.25),

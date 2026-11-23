@@ -139,7 +139,13 @@ def build():
                 ],
             }
         )
-    ratio_es = by_id["high_correlation"]["es"] / by_id["independent"]["es"]
+    independent_es = by_id["independent"]["es"]
+    if independent_es:
+        ratio_es = f"{by_id['high_correlation']['es'] / independent_es:.2f}×"
+        ratio_note = "高相关违约相对独立违约"
+    else:
+        ratio_es = "—"
+        ratio_note = "独立违约情景的 ES 为 0，倍数无定义"
     confidence = f"{result['config']['alpha']:.0%}"
     return {
         "repository": REPOSITORY,
@@ -152,7 +158,7 @@ def build():
         "description": "切换经济压力与违约相关性，比较组合损失、尾部风险与各行业的 ES 贡献。",
         "dataKind": "合成信贷组合 · 共同随机数模拟",
         "hero": metric(
-            f"{confidence} ES 倍数", f"{ratio_es:.2f}×", "高相关违约相对独立违约"
+            f"{confidence} ES 倍数", ratio_es, ratio_note
         ),
         "metrics": [
             metric(
